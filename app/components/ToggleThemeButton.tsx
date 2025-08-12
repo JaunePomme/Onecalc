@@ -7,7 +7,10 @@ export default function ToggleThemeButton() {
   useEffect(() => {
     // Initialisation selon le système ou le localStorage
     const saved = localStorage.getItem("theme");
-    if (saved === "dark" || (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+    if (
+      saved === "dark" ||
+      (!saved && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
       document.documentElement.classList.add("dark");
       setTheme("dark");
     } else {

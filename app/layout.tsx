@@ -96,8 +96,9 @@ export default function RootLayout({
               Clause de non-responsabilité →
             </Link>
             <div className="text-center sm:text-left w-full sm:w-auto mt-2 sm:mt-0">
-              Contenu protégé par le droit d&apos;auteur – La reproduction est interdite sans notre autorisation.<br />
-              © 2025 - OneCalc - Tous droits réservés
+              Contenu protégé par le droit d&apos;auteur – La reproduction est
+              interdite sans notre autorisation.
+              <br />© 2025 - OneCalc - Tous droits réservés
             </div>
           </div>
         </footer>

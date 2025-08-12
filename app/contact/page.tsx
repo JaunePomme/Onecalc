@@ -11,7 +11,9 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -44,7 +46,8 @@ export default function Contact() {
     <main className="max-w-xl mx-auto py-12 px-4 sm:px-8">
       <h1 className="text-3xl font-bold mb-6">Contact</h1>
       <p className="mb-8">
-        Veuillez renseigner vos coordonnées ainsi que votre message. Nous nous ferons un plaisir de vous répondre dans les plus brefs délais.
+        Veuillez renseigner vos coordonnées ainsi que votre message. Nous nous
+        ferons un plaisir de vous répondre dans les plus brefs délais.
       </p>
       {sent ? (
         <div className="p-4 bg-green-100 text-green-800 rounded mb-6">
@@ -103,9 +106,7 @@ export default function Contact() {
           >
             Envoyer
           </button>
-          {error && (
-            <div className="text-red-600 mt-2">{error}</div>
-          )}
+          {error && <div className="text-red-600 mt-2">{error}</div>}
         </form>
       )}
     </main>
