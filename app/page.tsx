@@ -5,9 +5,11 @@ import { useRouter } from "next/navigation";
 const calculators = [
 	{ label: "Calcul ROI", keywords: ["roi", "retour sur investissement"], path: "/roi" },
   { label: "Simulateur d'épargne", keywords: ["epargne", "simulateur d'épargne"], path: "/epargne" },
-  { label: "Simulateur de crédit consommation", keywords: ["conso", "crédit conso"], path: "/conso" },
+  { label: "Simulateur de crédit consommation", keywords: ["conso", "crédit"], path: "/conso" },
   { label: "Calculateur de mensualités", keywords: ["mensu", "mensualite"], path: "/mensualite" },
   { label: "Simulateur de crédit conso ", keywords: ["cout", "credit"], path: "/credit" },
+  { label: "Simulateur de capacité d'emprunt ", keywords: ["simulateur", "emprunt", "capacité"], path: "/emprunt" },
+  { label: "Calculateur d'IMC ", keywords: ["santé", "imc"], path: "/imc" },
 	// ...ajoute ici les 29 calculs avec leurs mots-clés et chemins
 ];
 
