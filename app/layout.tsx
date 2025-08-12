@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
+import ToggleThemeButton from "./components/ToggleThemeButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -102,6 +103,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        <ToggleThemeButton />
       </body>
     </html>
   );
