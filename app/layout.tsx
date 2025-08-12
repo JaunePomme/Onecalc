@@ -33,11 +33,9 @@ export default function RootLayout({
         <header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
           <div className="max-w-6xl mx-auto flex items-center justify-between p-4 sm:p-6">
             <div className="flex items-center gap-4">
-              <a
+              <Link
                 className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-                href="https://meteora.ag/"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/"
               >
                 <Image
                   src="/globe.svg"
@@ -47,7 +45,7 @@ export default function RootLayout({
                   style={{ borderRadius: "50%" }}
                 />
                 <span className="text-lg font-bold">OneCalc</span>
-              </a>
+              </Link>
             </div>
             <nav className="flex gap-6 text-sm sm:text-base">
               <a
