@@ -43,12 +43,57 @@ const calculators = [
     keywords: ["intérêts", "interets", "composés", "capitalisation", "placement"],
     path: "/interets",
   },
-{
+  {
     label: "Calculateur de taux d'endettement",
     keywords: ["endettement", "taux d'endettement", "dette", "charges", "revenus"],
     path: "/endettement",
   },
-  // ...ajoute ici les 29 calculs avec leurs mots-clés et chemins
+  {
+    label: "Compte à rebours",
+    keywords: ["timer", "compte à rebours", "minuteur", "alarme"],
+    path: "/compte-rebours",
+  },
+  {
+    label: "Calculateur d'âge exact",
+    keywords: ["âge", "age exact", "date de naissance", "anniversaire"],
+    path: "/age-exact",
+  },
+  {
+    label: "Allure, vitesse ou temps",
+    keywords: ["allure", "vitesse", "temps", "running", "course", "pace", "km/h", "min/km"],
+    path: "/allure-vitesse-temps",
+  },
+  {
+    label: "Besoin calorique journalier",
+    keywords: ["besoin calorique", "tdee", "bmr", "calories", "dépense énergétique"],
+    path: "/besoin-calorique",
+  },
+  {
+    label: "Calories brûlées par activité",
+    keywords: ["calories brûlées", "activité", "sport", "met", "dépense"],
+    path: "/calories-brulees",
+  },
+  {
+    label: "Zones de fréquence cardiaque cible",
+    keywords: ["fc cible", "fréquence cardiaque", "cardio", "zones cardio", "karvonen"],
+    path: "/fc-cible",
+  },
+  {
+    label: "Convertisseur d'heure entre villes",
+    keywords: ["convertisseur heure", "fuseau horaire", "heure ville", "décalage horaire"],
+    path: "/convertisseur-heure",
+  },
+  {
+    label: "Heure locale actuelle",
+    keywords: ["heure actuelle", "heure locale", "fuseau", "ville", "maintenant"],
+    path: "/heure-actuelle",
+  },
+  {
+    label: "Jours entre deux dates",
+    keywords: ["jours", "dates", "différence", "calendrier", "nombre de jours"],
+    path: "/jours-entre-deux-dates",
+  },
+  // ...ajoute ici les autres calculs avec leurs mots-clés et chemins
 ];
 
 export default function SearchBar() {
