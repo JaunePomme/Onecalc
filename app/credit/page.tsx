@@ -46,7 +46,7 @@ export default function CoutCredit() {
 	const [insurance, setInsurance] = useState("");
 	const [cost, setCost] = useState<null | number>(null);
 	const [total, setTotal] = useState<null | number>(null);
-	const [openFaq, setOpenFaq] = useState<number | null>(null);
+	const [openFaq, setOpenFaq] = useState<number[]>([]); // ← tableau d'index
 
 	const handleCalc = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -285,14 +285,20 @@ export default function CoutCredit() {
 							<button
 								type="button"
 								className="w-full text-left px-4 py-3 font-semibold focus:outline-none flex justify-between items-center"
-								onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-								aria-expanded={openFaq === idx}
+								onClick={() =>
+									setOpenFaq((prev) =>
+										prev.includes(idx)
+											? prev.filter((i) => i !== idx)
+											: [...prev, idx]
+									)
+								}
+								aria-expanded={openFaq.includes(idx)}
 								aria-controls={`faq-panel-${idx}`}
 							>
 								{item.question}
-								<span className="ml-2">{openFaq === idx ? "▲" : "▼"}</span>
+								<span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
 							</button>
-							{openFaq === idx && (
+							{openFaq.includes(idx) && (
 								<div
 									id={`faq-panel-${idx}`}
 									className="px-4 pb-4 text-gray-700 dark:text-gray-200 animate-fade-in"

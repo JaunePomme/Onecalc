@@ -43,6 +43,11 @@ const calculators = [
     keywords: ["intérêts", "interets", "composés", "capitalisation", "placement"],
     path: "/interets",
   },
+{
+    label: "Calculateur de taux d'endettement",
+    keywords: ["endettement", "taux d'endettement", "dette", "charges", "revenus"],
+    path: "/endettement",
+  },
   // ...ajoute ici les 29 calculs avec leurs mots-clés et chemins
 ];
 
