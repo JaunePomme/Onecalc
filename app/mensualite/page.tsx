@@ -9,6 +9,16 @@ const faqData = [
       "Notre simulateur de prêt immobilier calcule votre mensualité en fonction du montant emprunté, de la durée et du taux d’intérêt. Il vous permet d’estimer le remboursement mensuel de votre crédit immobilier facilement et gratuitement.",
   },
   {
+    question: "Taux 0 % ?",
+    answer:
+      "Si le taux d'intérêt est à 0 %, la mensualité correspond simplement au montant emprunté divisé par le nombre de mensualités. Aucun intérêt n'est ajouté.",
+  },
+  {
+    question: "Inclure assurance ?",
+    answer:
+      "Ce simulateur ne prend pas en compte l'assurance emprunteur. Pour une estimation plus précise, pensez à ajouter le coût de l'assurance à la mensualité calculée.",
+  },
+  {
     question:
       "Est-ce que la mensualité change si le taux de mon prêt immobilier augmente ?",
     answer:
@@ -67,6 +77,12 @@ export default function Mensualite() {
       <p className="mb-8">
         Simulez vos mensualités en fonction du montant, taux et durée.
       </p>
+
+      {/* Disclaimer placé juste après l'intro */}
+      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
+        <strong>Disclaimer :</strong> Ce résultat est donné à titre indicatif et ne
+        constitue pas un conseil financier.
+      </div>
 
       <form
         onSubmit={handleCalc}

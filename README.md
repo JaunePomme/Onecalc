@@ -2,6 +2,9 @@ Projet OneCalc
 
 ## Getting Started
 
+run prettier:
+npx prettier --write .
+
 First, run the development server:
 
 ```bash

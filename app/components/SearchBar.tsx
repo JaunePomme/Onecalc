@@ -33,7 +33,16 @@ const calculators = [
     keywords: ["simulateur", "emprunt", "capacité"],
     path: "/emprunt",
   },
-  { label: "Calculateur d'IMC ", keywords: ["santé", "imc"], path: "/imc" },
+  {
+    label: "Calculateur d'IMC ",
+    keywords: ["santé", "imc"],
+    path: "/imc",
+  },
+  {
+    label: "Intérêts composés",
+    keywords: ["intérêts", "interets", "composés", "capitalisation", "placement"],
+    path: "/interets",
+  },
   // ...ajoute ici les 29 calculs avec leurs mots-clés et chemins
 ];
 
