@@ -1,168 +1,245 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { FaPiggyBank, FaChartLine, FaSolarPanel, FaMoneyBillWave, FaCalculator, FaBalanceScale, FaHeartbeat, FaRunning, FaFire, FaClock, FaCalendarAlt, FaWeight, FaUser, FaExchangeAlt } from "react-icons/fa";
 
-const calculators = [
-  {
-    label: "Calcul ROI",
-    keywords: ["roi", "retour sur investissement"],
-    path: "/roi",
-  },
-  {
-    label: "Simulateur d'épargne",
-    keywords: ["epargne", "simulateur d'épargne"],
-    path: "/epargne",
-  },
-  {
-    label: "Simulateur de crédit consommation",
-    keywords: ["conso", "crédit"],
-    path: "/conso",
-  },
-  {
-    label: "Calculateur de mensualités",
-    keywords: ["mensu", "mensualite"],
-    path: "/mensualite",
-  },
-  {
-    label: "Simulateur de crédit conso ",
-    keywords: ["cout", "credit"],
-    path: "/credit",
-  },
-  {
-    label: "Simulateur de capacité d'emprunt ",
-    keywords: ["simulateur", "emprunt", "capacité"],
-    path: "/emprunt",
-  },
-  {
-    label: "Calculateur d'IMC ",
-    keywords: ["santé", "imc"],
-    path: "/imc",
-  },
-  {
-    label: "Intérêts composés",
-    keywords: ["intérêts", "interets", "composés", "capitalisation", "placement"],
-    path: "/interets",
-  },
-  {
-    label: "Calculateur de taux d'endettement",
-    keywords: ["endettement", "taux d'endettement", "dette", "charges", "revenus"],
-    path: "/endettement",
-  },
-  {
-    label: "Compte à rebours",
-    keywords: ["timer", "compte à rebours", "minuteur", "alarme"],
-    path: "/compte-rebours",
-  },
-  {
-    label: "Calculateur d'âge exact",
-    keywords: ["âge", "age exact", "date de naissance", "anniversaire"],
-    path: "/age-exact",
-  },
-  {
-    label: "Allure, vitesse ou temps",
-    keywords: ["allure", "vitesse", "temps", "running", "course", "pace", "km/h", "min/km"],
-    path: "/allure-vitesse-temps",
-  },
-  {
-    label: "Besoin calorique journalier",
-    keywords: ["besoin calorique", "tdee", "bmr", "calories", "dépense énergétique"],
-    path: "/besoin-calorique",
-  },
-  {
-    label: "Calories brûlées par activité",
-    keywords: ["calories brûlées", "activité", "sport", "met", "dépense"],
-    path: "/calories-brulees",
-  },
-  {
-    label: "Zones de fréquence cardiaque cible",
-    keywords: ["fc cible", "fréquence cardiaque", "cardio", "zones cardio", "karvonen"],
-    path: "/fc-cible",
-  },
-  {
-    label: "Convertisseur d'heure entre villes",
-    keywords: ["convertisseur heure", "fuseau horaire", "heure ville", "décalage horaire"],
-    path: "/convertisseur-heure",
-  },
-  {
-    label: "Heure locale actuelle",
-    keywords: ["heure actuelle", "heure locale", "fuseau", "ville", "maintenant"],
-    path: "/heure-actuelle",
-  },
-  {
-    label: "Jours entre deux dates",
-    keywords: ["jours", "dates", "différence", "calendrier", "nombre de jours"],
-    path: "/jours-entre-deux-dates",
-  },
-  // ...ajoute ici les autres calculs avec leurs mots-clés et chemins
+const categories = [
+    {
+        name: "Épargne & Investissement",
+        icon: <FaPiggyBank className="inline mr-2" />,
+        calculators: [
+            {
+                label: "Simulateur d'épargne",
+                path: "/epargne",
+                icon: <FaPiggyBank size={32} />,
+                keywords: ["epargne", "épargne", "placement", "investissement"],
+            },
+            {
+                label: "Calcul ROI",
+                path: "/roi",
+                icon: <FaChartLine size={32} />,
+                keywords: ["roi", "retour sur investissement"],
+            },
+            {
+                label: "Intérêts composés",
+                path: "/interets",
+                icon: <FaCalculator size={32} />,
+                keywords: ["intérêts", "interets", "composés", "capitalisation"],
+            },
+        ],
+    },
+    {
+        name: "Crédits",
+        icon: <FaMoneyBillWave className="inline mr-2" />,
+        calculators: [
+            {
+                label: "Simulateur de crédit consommation",
+                path: "/conso",
+                icon: <FaMoneyBillWave size={32} />,
+                keywords: ["conso", "crédit", "consommation"],
+            },
+            {
+                label: "Calculateur de mensualités",
+                path: "/mensualite",
+                icon: <FaCalculator size={32} />,
+                keywords: ["mensualité", "mensualite", "mensu", "crédit"],
+            },
+            {
+                label: "Simulateur de crédit conso",
+                path: "/credit",
+                icon: <FaMoneyBillWave size={32} />,
+                keywords: ["crédit", "conso", "coût", "cout"],
+            },
+            {
+                label: "Simulateur de capacité d'emprunt",
+                path: "/emprunt",
+                icon: <FaBalanceScale size={32} />,
+                keywords: ["emprunt", "capacité", "simulateur"],
+            },
+            {
+                label: "Calculateur de taux d'endettement",
+                path: "/endettement",
+                icon: <FaBalanceScale size={32} />,
+                keywords: ["endettement", "taux", "dette", "charges", "revenus"],
+            },
+        ],
+    },
+    {
+        name: "Santé & Sport",
+        icon: <FaHeartbeat className="inline mr-2" />,
+        calculators: [
+            {
+                label: "Calculateur d'IMC",
+                path: "/imc",
+                icon: <FaWeight size={32} />,
+                keywords: ["imc", "indice", "masse", "corporelle", "santé"],
+            },
+            {
+                label: "Calculateur d'âge exact",
+                path: "/age-exact",
+                icon: <FaUser size={32} />,
+                keywords: ["âge", "age", "date de naissance", "anniversaire"],
+            },
+            {
+                label: "Besoin calorique journalier",
+                path: "/besoin-calorique",
+                icon: <FaFire size={32} />,
+                keywords: ["calorie", "besoin", "tdee", "bmr", "dépense"],
+            },
+            {
+                label: "Calories brûlées par activité",
+                path: "/calories-brulees",
+                icon: <FaFire size={32} />,
+                keywords: ["calories", "brûlées", "activité", "sport", "met"],
+            },
+            {
+                label: "Zones de fréquence cardiaque cible",
+                path: "/fc-cible",
+                icon: <FaHeartbeat size={32} />,
+                keywords: ["fc", "fréquence", "cardiaque", "cardio", "karvonen"],
+            },
+        ],
+    },
+    {
+        name: "Temps & Date",
+        icon: <FaClock className="inline mr-2" />,
+        calculators: [
+            {
+                label: "Compte à rebours",
+                path: "/compte-rebours",
+                icon: <FaClock size={32} />,
+                keywords: ["timer", "compte à rebours", "minuteur", "alarme"],
+            },
+            {
+                label: "Convertisseur d'heure entre villes",
+                path: "/convertisseur-heure",
+                icon: <FaExchangeAlt size={32} />,
+                keywords: ["convertisseur", "heure", "fuseau", "ville", "décalage"],
+            },
+            {
+                label: "Heure locale actuelle",
+                path: "/heure-actuelle",
+                icon: <FaClock size={32} />,
+                keywords: ["heure", "actuelle", "locale", "maintenant"],
+            },
+            {
+                label: "Jours entre deux dates",
+                path: "/jours-entre-deux-dates",
+                icon: <FaCalendarAlt size={32} />,
+                keywords: ["jours", "dates", "différence", "calendrier"],
+            },
+        ],
+    },
+    {
+        name: "Sport & Performance",
+        icon: <FaRunning className="inline mr-2" />,
+        calculators: [
+            {
+                label: "Allure, vitesse ou temps",
+                path: "/allure-vitesse-temps",
+                icon: <FaRunning size={32} />,
+                keywords: [
+                    "allure",
+                    "vitesse",
+                    "temps",
+                    "running",
+                    "course",
+                    "pace",
+                    "km/h",
+                    "min/km",
+                ],
+            },
+        ],
+    },
 ];
 
-export default function SearchBar() {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<typeof calculators>([]);
-  const router = useRouter();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setQuery(value);
-    if (value.length > 1) {
-      const filtered = calculators.filter((calc) =>
-        [calc.label, ...calc.keywords].some((word) =>
-          word.toLowerCase().includes(value.toLowerCase()),
-        ),
-      );
-      setResults(filtered);
-    } else {
-      setResults([]);
-    }
-  };
-
-  const handleSelect = (calc: (typeof calculators)[0]) => {
-    setQuery("");
-    setResults([]);
-    router.push(calc.path);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (results.length > 0) {
-      handleSelect(results[0]);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="w-full relative">
-      <input
-        type="text"
-        value={query}
-        onChange={handleChange}
-        placeholder="Rechercher un calcul (ex: ROI, TVA, salaire...)"
-        className="w-full p-3 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow"
-        autoFocus
-      />
-      {query.length > 1 && results.length === 0 && (
-        <div className="absolute z-10 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 w-full mt-1 rounded shadow p-4 text-center text-gray-600 dark:text-gray-300">
-          Aucun calcul trouvé.
-          <br />
-          Vérifiez l’orthographe ou{" "}
-          <a href="/contact" className="underline">
-            contactez-nous
-          </a>{" "}
-          pour suggérer une nouvelle fonctionnalité&nbsp;!
-        </div>
-      )}
-      {results.length > 0 && (
-        <ul className="absolute z-10 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 w-full mt-1 rounded shadow">
-          {results.map((calc) => (
-            <li
-              key={calc.path}
-              className="p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-              onClick={() => handleSelect(calc)}
+function highlight(text: string, query: string) {
+    if (!query) return text;
+    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
+    const parts = text.split(regex);
+    return parts.map((part, i) =>
+        regex.test(part) && part.toLowerCase() === query.toLowerCase() ? (
+            <span
+                key={i}
+                style={{
+                    background: "#fff59d",
+                    color: "#222",
+                    borderRadius: "2px",
+                    padding: "0 1px",
+                }}
             >
-              {calc.label}
-            </li>
-          ))}
-        </ul>
-      )}
-    </form>
-  );
+                {part}
+            </span>
+        ) : (
+            part
+        )
+    );
+}
+
+export default function SearchBar() {
+    const [query, setQuery] = useState("");
+    const router = useRouter();
+
+    // Filtrage dynamique
+    const filteredCategories =
+        query.length > 1
+            ? categories
+                    .map((cat) => ({
+                        ...cat,
+                        calculators: cat.calculators.filter((calc) =>
+                            [calc.label, ...(calc.keywords || [])]
+                                .some((word) => word.toLowerCase().includes(query.toLowerCase()))
+                        ),
+                    }))
+                    .filter((cat) => cat.calculators.length > 0)
+            : categories;
+
+    return (
+        <div className="w-full max-w-4xl mx-auto pt-8 px-4">
+            <div className="flex justify-center mb-8">
+                <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Rechercher un calcul (ex: ROI, TVA, salaire...)"
+                    className="w-full max-w-xl p-3 rounded border border-blue-400 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow"
+                />
+            </div>
+            <div className="flex flex-col gap-8">
+                {filteredCategories.map((cat) => (
+                    <div key={cat.name}>
+                        <h2 className="text-xl font-semibold mb-3 flex items-center">
+                            {cat.icon}
+                            {cat.name}
+                        </h2>
+                        <div className="flex flex-row flex-wrap gap-4 mb-2">
+                            {cat.calculators.map((calc) => (
+                                <button
+                                    key={calc.path}
+                                    onClick={() => router.push(calc.path)}
+                                    className="flex flex-col items-center w-28 p-3 bg-gray-50 dark:bg-gray-800 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition cursor-pointer border border-transparent hover:border-blue-400"
+                                >
+                                    <div>{calc.icon}</div>
+                                    <span className="mt-2 text-center text-sm font-medium text-gray-900 dark:text-gray-100">
+                                        {highlight(calc.label, query)}
+                                    </span>
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+            {query.length > 1 && filteredCategories.length === 0 && (
+                <div className="text-center text-gray-500 mt-8">
+                    Aucun calcul trouvé.
+                    <br />
+                    Vérifiez l’orthographe ou{" "}
+                    <a href="/contact" className="underline">
+                        contactez-nous
+                    </a>{" "}
+                    pour suggérer une nouvelle fonctionnalité&nbsp;!
+                </div>
+            )}
+        </div>
+    );
 }
