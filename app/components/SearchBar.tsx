@@ -10,8 +10,8 @@ import {
 } from "react-icons/fa";
 
 const categories = [
-    // Épargne & Investissement
     {
+        key: "epargne-investissement",
         name: "Épargne & Investissement",
         icon: <FaPiggyBank className="inline mr-2" />,
         calculators: [
@@ -47,8 +47,8 @@ const categories = [
             },
         ],
     },
-    // Crédits
     {
+        key: "credits",
         name: "Crédits",
         icon: <FaMoneyBillWave className="inline mr-2" />,
         calculators: [
@@ -114,8 +114,8 @@ const categories = [
             },
         ],
     },
-    // Santé & Sport
     {
+        key: "sante-sport",
         name: "Santé & Sport",
         icon: <FaHeartbeat className="inline mr-2" />,
         calculators: [
@@ -193,8 +193,8 @@ const categories = [
             },
         ],
     },
-    // Temps & Date
     {
+        key: "temps-date",
         name: "Temps & Date",
         icon: <FaClock className="inline mr-2" />,
         calculators: [
@@ -272,8 +272,8 @@ const categories = [
             },
         ],
     },
-    // Maths & Outils
     {
+        key: "maths-outils",
         name: "Maths & Outils",
         icon: <FaCalculator className="inline mr-2" />,
         calculators: [
@@ -291,8 +291,8 @@ const categories = [
             },
         ],
     },
-    // Convertisseurs
     {
+        key: "convertisseurs",
         name: "Convertisseurs",
         icon: <FaExchangeAlt className="inline mr-2" />,
         calculators: [
@@ -310,8 +310,8 @@ const categories = [
             },
         ],
     },
-    // Sciences
     {
+        key: "sciences",
         name: "Sciences",
         icon: <FaFlask className="inline mr-2" />,
         calculators: [
@@ -385,7 +385,11 @@ export default function SearchBar() {
             </div>
             <div className="flex flex-col gap-8">
                 {filteredCategories.map((cat) => (
-                    <div key={cat.name}>
+                    <section
+                        key={cat.name}
+                        id={cat.key}
+                        className="scroll-mt-24"
+                    >
                         <h2 className="text-xl font-semibold mb-3 flex items-center">
                             {cat.icon}
                             {cat.name}
@@ -404,7 +408,7 @@ export default function SearchBar() {
                                 </button>
                             ))}
                         </div>
-                    </div>
+                    </section>
                 ))}
             </div>
             {query.length > 1 && filteredCategories.length === 0 && (
