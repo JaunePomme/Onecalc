@@ -1,26 +1,9 @@
 "use client";
-import { useState } from "react";
 
-const faqData = [
-  {
-    question: "Qu’est-ce que le TRI (IRR) ?",
-    answer:
-      "Le Taux de Rendement Interne (TRI ou IRR en anglais) est le taux qui annule la valeur actuelle nette (VAN) d’une série de flux de trésorerie. Il permet d’évaluer la rentabilité d’un investissement.",
-  },
-  {
-    question: "Comment saisir les flux ?",
-    answer:
-      "Indiquez le montant investi (négatif) puis les flux de retour (positifs ou négatifs) pour chaque période, séparés par des virgules. Exemple : -1000, 200, 300, 400, 500.",
-  },
-  {
-    question: "Quelle convention de périodicité ?",
-    answer:
-      "Chaque flux correspond à une période (année, trimestre, mois…). Le TRI est calculé sur cette base.",
-  },
-];
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 function irr(cashflows: number[], guess = 0.1): number | null {
-  // Newton-Raphson method
   let rate = guess;
   for (let iter = 0; iter < 1000; iter++) {
     let npv = 0;
@@ -40,6 +23,7 @@ function irr(cashflows: number[], guess = 0.1): number | null {
 }
 
 export default function TriPage() {
+  const t = useTranslations("Tri");
   const [flux, setFlux] = useState("");
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,13 +38,13 @@ export default function TriPage() {
       .filter((v) => !isNaN(v));
     if (parts.length < 2) {
       setResult(null);
-      setError("Veuillez saisir au moins deux flux (investissement et retours).");
+      setError(t("errorInput"));
       return;
     }
     const r = irr(parts);
     if (r === null || isNaN(r)) {
       setResult(null);
-      setError("Impossible de calculer le TRI avec ces flux.");
+      setError(t("errorImpossible"));
     } else {
       setResult(r);
     }
@@ -72,61 +56,56 @@ export default function TriPage() {
     );
   };
 
+  const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Calculateur de TRI / IRR (simple)
-      </h1>
-      <p className="mb-8">
-        Calculez le Taux de Rendement Interne (TRI/IRR) d’un investissement à partir de vos flux de trésorerie.
-      </p>
-
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas une analyse financière professionnelle.
+        <strong>{t("disclaimerLabel")}</strong> {t("disclaimer")}
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
       >
         <label>
-          Flux de trésorerie (séparés par des virgules) :
+          {t("fluxLabel")}
           <input
             type="text"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 font-mono"
             value={flux}
             onChange={e => setFlux(e.target.value)}
-            placeholder="-1000, 200, 300, 400, 500"
+            placeholder={t("fluxPlaceholder")}
             required
+            aria-label={t("fluxLabel")}
           />
         </label>
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
           {error ? (
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
-            <>
-              <span className="text-lg font-bold">
-                {(result * 100).toLocaleString("fr-FR", { maximumFractionDigits: 4 })} %
-              </span>
-            </>
+            <span className="text-lg font-bold">
+              {(result * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })} %
+            </span>
           ) : (
             "--"
           )}
         </div>
       </form>
-
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Calcul du TRI / IRR
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
@@ -141,9 +120,7 @@ export default function TriPage() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">
-                  {openFaq.includes(idx) ? "▲" : "▼"}
-                </span>
+                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
               </button>
               {openFaq.includes(idx) && (
                 <div

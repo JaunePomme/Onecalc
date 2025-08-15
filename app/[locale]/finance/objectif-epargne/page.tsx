@@ -1,23 +1,7 @@
+
 "use client";
 import { useState } from "react";
-
-const faqData = [
-  {
-    question: "Comment est calculé le montant à épargner chaque mois ?",
-    answer:
-      "Le calcul prend en compte le capital de départ, l’objectif à atteindre, la durée (en mois) et le taux d’intérêt annuel (capitalisation mensuelle).",
-  },
-  {
-    question: "Le taux d’intérêt est-il obligatoire ?",
-    answer:
-      "Non, si vous laissez le taux à 0, le calcul sera purement arithmétique (pas d’intérêts composés).",
-  },
-  {
-    question: "Peut-on choisir une date future précise ?",
-    answer:
-      "Oui, la durée est automatiquement calculée entre aujourd’hui et la date cible choisie.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 function monthsBetween(date1: Date, date2: Date) {
   return (
@@ -27,7 +11,6 @@ function monthsBetween(date1: Date, date2: Date) {
   );
 }
 
-// Formule d'une suite géométrique pour épargne mensuelle avec intérêts composés
 function calculerEpargneMensuelle({
   objectif,
   capitalInitial,
@@ -42,16 +25,15 @@ function calculerEpargneMensuelle({
   if (nbMois <= 0) return null;
   const r = tauxAnnuel > 0 ? tauxAnnuel / 12 / 100 : 0;
   if (r === 0) {
-    // Pas d'intérêt
     return (objectif - capitalInitial) / nbMois;
   }
-  // Avec intérêts composés
   const num = objectif - capitalInitial * Math.pow(1 + r, nbMois);
   const denom = (Math.pow(1 + r, nbMois) - 1) / r;
   return num / denom;
 }
 
 export default function ObjectifEpargne() {
+  const t = useTranslations("ObjectifEpargne");
   const [objectif, setObjectif] = useState("");
   const [capital, setCapital] = useState("");
   const [taux, setTaux] = useState("");
@@ -69,12 +51,12 @@ export default function ObjectifEpargne() {
     const tauxAnnuel = parseFloat(taux.replace(",", ".")) || 0;
     if (isNaN(obj) || obj <= 0) {
       setResult(null);
-      setError("Veuillez saisir un objectif valide.");
+      setError(t("errorObjectif"));
       return;
     }
     if (date === "") {
       setResult(null);
-      setError("Veuillez choisir une date cible.");
+      setError(t("errorDate"));
       return;
     }
     const now = new Date();
@@ -83,7 +65,7 @@ export default function ObjectifEpargne() {
     setNbMois(mois);
     if (mois <= 0) {
       setResult(null);
-      setError("La date cible doit être dans le futur.");
+      setError(t("errorFuture"));
       return;
     }
     const mensualite = calculerEpargneMensuelle({
@@ -94,7 +76,7 @@ export default function ObjectifEpargne() {
     });
     if (mensualite === null || !isFinite(mensualite)) {
       setResult(null);
-      setError("Impossible de calculer avec ces paramètres.");
+      setError(t("errorImpossible"));
       return;
     }
     setResult(mensualite);
@@ -106,25 +88,24 @@ export default function ObjectifEpargne() {
     );
   };
 
+  const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Objectif épargne : combien épargner par mois ?
-      </h1>
-      <p className="mb-8">
-        Calculez le montant à épargner chaque mois pour atteindre votre objectif à une date donnée, avec ou sans intérêts.
-      </p>
-
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas un conseil financier.
+        <strong>{t("disclaimer")}</strong>
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
       >
         <label>
-          Objectif à atteindre (€) :
+          {t("objectifLabel")}
           <input
             type="number"
             min="0"
@@ -133,10 +114,11 @@ export default function ObjectifEpargne() {
             value={objectif}
             onChange={e => setObjectif(e.target.value)}
             required
+            aria-label={t("objectifLabel")}
           />
         </label>
         <label>
-          Capital de départ (€) :
+          {t("capitalLabel")}
           <input
             type="number"
             min="0"
@@ -144,10 +126,11 @@ export default function ObjectifEpargne() {
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={capital}
             onChange={e => setCapital(e.target.value)}
+            aria-label={t("capitalLabel")}
           />
         </label>
         <label>
-          Taux d’intérêt annuel (%) (optionnel) :
+          {t("tauxLabel")}
           <input
             type="number"
             min="0"
@@ -156,37 +139,39 @@ export default function ObjectifEpargne() {
             value={taux}
             onChange={e => setTaux(e.target.value)}
             placeholder="0"
+            aria-label={t("tauxLabel")}
           />
         </label>
         <label>
-          Date cible :
+          {t("dateLabel")}
           <input
             type="date"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={date}
             onChange={e => setDate(e.target.value)}
             required
+            aria-label={t("dateLabel")}
           />
         </label>
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
           {error ? (
             <span className="text-red-600">{error}</span>
           ) : result !== null && nbMois !== null ? (
             <>
               <span className="text-lg font-bold">
-                {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} € / mois
+                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })} € / {t("perMonth")}
               </span>
               <br />
               <span className="text-xs text-gray-500">
-                sur {nbMois} mois
+                {t("overMonths", { nbMois })}
               </span>
             </>
           ) : (
@@ -196,9 +181,7 @@ export default function ObjectifEpargne() {
       </form>
 
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Objectif épargne
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
@@ -213,9 +196,7 @@ export default function ObjectifEpargne() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">
-                  {openFaq.includes(idx) ? "▲" : "▼"}
-                </span>
+                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
               </button>
               {openFaq.includes(idx) && (
                 <div

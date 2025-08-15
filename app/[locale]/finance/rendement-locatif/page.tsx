@@ -1,23 +1,7 @@
 "use client";
-import { useState } from "react";
 
-const faqData = [
-  {
-    question: "Qu’est-ce que le rendement locatif ?",
-    answer:
-      "Le rendement locatif mesure la rentabilité brute ou nette d’un investissement immobilier, en rapportant les loyers perçus au prix d’achat et aux frais.",
-  },
-  {
-    question: "Comment calculer le cash-on-cash ?",
-    answer:
-      "Le cash-on-cash compare le cash réellement investi (apport, frais, etc.) au cash généré chaque année (revenu net avant impôt).",
-  },
-  {
-    question: "Quels frais prendre en compte ?",
-    answer:
-      "Pour un calcul précis, incluez tous les frais : notaire, agence, travaux, charges, taxe foncière, assurance, etc.",
-  },
-];
+import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 function calcRendement({
   loyerAnnuel,
@@ -41,6 +25,7 @@ function calcRendement({
 }
 
 export default function RendementLocatif() {
+  const t = useTranslations("RendementLocatif");
   const [loyer, setLoyer] = useState("");
   const [prix, setPrix] = useState("");
   const [frais, setFrais] = useState("");
@@ -73,25 +58,28 @@ export default function RendementLocatif() {
     );
   };
 
+  const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Calculateur de rendement locatif / cash-on-cash
-      </h1>
-      <p className="mb-8">
-        Estimez la rentabilité de votre investissement immobilier, brut, net et cash-on-cash.
-      </p>
-
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas une analyse professionnelle.
+        <strong>{t("disclaimer")}</strong>
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
       >
+        <label className="hidden">
+          Menu principal
+          <input type="text" tabIndex={-1} autoComplete="off" />
+        </label>
         <label>
-          Loyer mensuel (€) :
+          {t("loyerLabel")}
           <input
             type="number"
             min="0"
@@ -100,10 +88,11 @@ export default function RendementLocatif() {
             value={loyer}
             onChange={e => setLoyer(e.target.value)}
             required
+            aria-label={t("loyerLabel")}
           />
         </label>
         <label>
-          Prix d’achat (€) :
+          {t("prixLabel")}
           <input
             type="number"
             min="0"
@@ -112,10 +101,11 @@ export default function RendementLocatif() {
             value={prix}
             onChange={e => setPrix(e.target.value)}
             required
+            aria-label={t("prixLabel")}
           />
         </label>
         <label>
-          Frais annexes (€) (notaire, agence, travaux…) :
+          {t("fraisLabel")}
           <input
             type="number"
             min="0"
@@ -123,10 +113,11 @@ export default function RendementLocatif() {
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={frais}
             onChange={e => setFrais(e.target.value)}
+            aria-label={t("fraisLabel")}
           />
         </label>
         <label>
-          Charges annuelles (€) (taxe foncière, assurance, etc.) :
+          {t("chargesLabel")}
           <input
             type="number"
             min="0"
@@ -134,10 +125,11 @@ export default function RendementLocatif() {
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={charges}
             onChange={e => setCharges(e.target.value)}
+            aria-label={t("chargesLabel")}
           />
         </label>
         <label>
-          Apport personnel (€) (pour cash-on-cash, optionnel) :
+          {t("apportLabel")}
           <input
             type="number"
             min="0"
@@ -145,29 +137,30 @@ export default function RendementLocatif() {
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={apport}
             onChange={e => setApport(e.target.value)}
+            aria-label={t("apportLabel")}
           />
         </label>
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
           {result ? (
             <>
               <span className="text-lg font-bold">
-                Rendement brut : {result.rendementBrut.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %
+                {t("brutLabel")} {result.rendementBrut.toLocaleString(undefined, { maximumFractionDigits: 2 })} %
               </span>
               <br />
               <span className="text-lg font-bold">
-                Rendement net : {result.rendementNet.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %
+                {t("netLabel")} {result.rendementNet.toLocaleString(undefined, { maximumFractionDigits: 2 })} %
               </span>
               <br />
               <span className="text-lg font-bold">
-                Cash-on-cash : {result.cashOnCash !== null ? result.cashOnCash.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) + " %" : "--"}
+                {t("cocLabel")} {result.cashOnCash !== null ? result.cashOnCash.toLocaleString(undefined, { maximumFractionDigits: 2 }) + " %" : "--"}
               </span>
             </>
           ) : (
@@ -177,9 +170,7 @@ export default function RendementLocatif() {
       </form>
 
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Rendement locatif / cash-on-cash
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
@@ -194,9 +185,7 @@ export default function RendementLocatif() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">
-                  {openFaq.includes(idx) ? "▲" : "▼"}
-                </span>
+                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
               </button>
               {openFaq.includes(idx) && (
                 <div

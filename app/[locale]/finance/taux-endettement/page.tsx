@@ -1,25 +1,10 @@
 "use client";
+
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-const faqData = [
-  {
-    question: "Bon taux d’endettement ?",
-    answer:
-      "Un bon taux d’endettement se situe généralement en dessous de 33 %. Ce seuil est souvent utilisé par les banques pour accorder un crédit, mais il peut varier selon votre situation et l’établissement prêteur.",
-  },
-  {
-    question: "Quelles charges inclure ?",
-    answer:
-      "Il faut inclure toutes les charges récurrentes : mensualités de crédits (immobilier, auto, consommation), pensions alimentaires, loyers, et autres engagements financiers réguliers. Plus l’estimation est précise, plus le calcul sera fiable.",
-  },
-  {
-    question: "Comment améliorer son taux d’endettement ?",
-    answer:
-      "Pour améliorer votre taux d’endettement, vous pouvez augmenter vos revenus, rembourser certains crédits, ou regrouper vos prêts pour réduire vos mensualités. Une gestion rigoureuse de vos finances aide aussi à optimiser ce taux.",
-  },
-];
-
-export default function Endettement() {
+export default function TauxEndettement() {
+  const t = useTranslations("TauxEndettement");
   const [revenus, setRevenus] = useState("");
   const [chargesCredit, setChargesCredit] = useState("");
   const [autresCharges, setAutresCharges] = useState("");
@@ -44,20 +29,18 @@ export default function Endettement() {
     );
   };
 
+  const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Calculez votre taux d’endettement simplement
-      </h1>
-      <p className="mb-8">
-        Estimez votre taux d’endettement pour mieux préparer votre dossier de crédit ou suivre votre équilibre financier.
-      </p>
-
-      {/* Disclaimer placé juste après l'intro */}
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Seuils indicatifs ; dépend des banques.
+        <strong>{t("disclaimer")}</strong>
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
@@ -67,7 +50,7 @@ export default function Endettement() {
           <input type="text" tabIndex={-1} autoComplete="off" />
         </label>
         <label>
-          Revenus nets mensuels (€) :
+          {t("revenusLabel")}
           <input
             type="number"
             min="0"
@@ -76,10 +59,11 @@ export default function Endettement() {
             value={revenus}
             onChange={(e) => setRevenus(e.target.value)}
             required
+            aria-label={t("revenusLabel")}
           />
         </label>
         <label>
-          Charges crédit (€) :
+          {t("chargesCreditLabel")}
           <input
             type="number"
             min="0"
@@ -88,10 +72,11 @@ export default function Endettement() {
             value={chargesCredit}
             onChange={(e) => setChargesCredit(e.target.value)}
             required
+            aria-label={t("chargesCreditLabel")}
           />
         </label>
         <label>
-          Autres charges (€) :
+          {t("autresChargesLabel")}
           <input
             type="number"
             min="0"
@@ -100,21 +85,22 @@ export default function Endettement() {
             value={autresCharges}
             onChange={(e) => setAutresCharges(e.target.value)}
             required
+            aria-label={t("autresChargesLabel")}
           />
         </label>
         <div className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
-          ⚠️ Les résultats sont donnés à titre indicatif.
+          {t("indicative")}
         </div>
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
-          Taux d’endettement :{" "}
+          {t("tauxLabel")} {" "}
           <span className="text-lg font-bold">
             {result !== null ? `${result.toFixed(2)} %` : "-- %"}
           </span>
@@ -122,36 +108,24 @@ export default function Endettement() {
       </form>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">
-          Comment calculer le taux d’endettement&nbsp;?
-        </h2>
-        <p>
-          Le taux d’endettement permet de mesurer la part de vos revenus consacrée au remboursement de vos crédits et autres charges fixes. Il est un indicateur clé pour les banques lors d’une demande de prêt.
-        </p>
+        <h2 className="text-xl font-semibold mb-2">{t("howTitle")}</h2>
+        <p>{t("howDesc")}</p>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">
-          Formule de calcul
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("formulaTitle")}</h3>
         <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm">
-          Taux d’endettement = (Charges crédit + Autres charges) / Revenus nets mensuels × 100
+          {t("formula")}
         </div>
-        <p>
-          Exemple : Revenus = 3 000 €, Charges crédit = 700 €, Autres charges = 200 €
-        </p>
+        <p>{t("exampleText")}</p>
         <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm">
-          Taux = (700 + 200) / 3 000 × 100 = 30 %
+          {t("exampleFormula")}
         </div>
-        <p>
-          Dans cet exemple, le taux d’endettement est de 30 %.
-        </p>
+        <p>{t("exampleResult")}</p>
       </section>
 
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Questions fréquentes sur le taux d’endettement
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div

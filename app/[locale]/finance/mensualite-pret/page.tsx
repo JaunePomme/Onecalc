@@ -1,55 +1,15 @@
+
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
-const faqData = [
-  {
-    question:
-      "Comment calculer la mensualité d’un prêt immobilier avec ce simulateur ?",
-    answer:
-      "Notre simulateur de prêt immobilier calcule votre mensualité en fonction du montant emprunté, de la durée et du taux d’intérêt. Il vous permet d’estimer le remboursement mensuel de votre crédit immobilier facilement et gratuitement.",
-  },
-  {
-    question: "Taux 0 % ?",
-    answer:
-      "Si le taux d'intérêt est à 0 %, la mensualité correspond simplement au montant emprunté divisé par le nombre de mensualités. Aucun intérêt n'est ajouté.",
-  },
-  {
-    question: "Inclure assurance ?",
-    answer:
-      "Ce simulateur ne prend pas en compte l'assurance emprunteur. Pour une estimation plus précise, pensez à ajouter le coût de l'assurance à la mensualité calculée.",
-  },
-  {
-    question:
-      "Est-ce que la mensualité change si le taux de mon prêt immobilier augmente ?",
-    answer:
-      "Oui, si votre crédit immobilier est à taux variable, la mensualité évolue en fonction du marché. Avec un prêt immobilier à taux fixe, le calcul de la mensualité reste identique sur toute la durée du prêt.",
-  },
-  {
-    question:
-      "Pourquoi utiliser un simulateur de mensualité pour un crédit immobilier ?",
-    answer:
-      "Simuler vos mensualités de prêt immobilier vous aide à prévoir votre budget, à comparer plusieurs offres de crédit et à estimer le coût total de votre emprunt immobilier avant de signer.",
-  },
-  {
-    question:
-      "Comment réduire le montant de mes mensualités de prêt immobilier ?",
-    answer:
-      "Pour réduire la mensualité de votre crédit immobilier, vous pouvez allonger la durée du prêt ou négocier un taux d’intérêt plus bas. Attention : allonger la durée augmente le coût total du crédit immobilier.",
-  },
-  {
-    question:
-      "Quelle différence entre mensualité de prêt immobilier et coût total du crédit ?",
-    answer:
-      "La mensualité est le montant que vous remboursez chaque mois pour votre prêt immobilier. Le coût total du crédit correspond à l’ensemble des mensualités et des intérêts payés sur toute la durée de l’emprunt.",
-  },
-];
-
-export default function Mensualite() {
+export default function MensualitePret() {
+  const t = useTranslations("MensualitePret");
   const [amount, setAmount] = useState("");
   const [rate, setRate] = useState("");
   const [years, setYears] = useState("");
   const [result, setResult] = useState<null | number>(null);
-  const [openFaq, setOpenFaq] = useState<number[]>([]); // ← tableau d'index
+  const [openFaq, setOpenFaq] = useState<number[]>([]);
 
   const handleCalc = (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,30 +29,24 @@ export default function Mensualite() {
     }
   };
 
-  // Nouvelle fonction pour gérer l'ouverture/fermeture
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx)
-        ? prev.filter((i) => i !== idx)
-        : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
     );
   };
 
+  const faqData = Array.from({ length: 7 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Calculez la mensualité de votre prêt en quelques clics
-      </h1>
-      <p className="mb-8">
-        Simulez vos mensualités en fonction du montant, taux et durée.
-      </p>
-
-      {/* Disclaimer placé juste après l'intro */}
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Ce résultat est donné à titre indicatif et ne
-        constitue pas un conseil financier.
+        <strong>{t("disclaimer")}</strong>
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
@@ -102,7 +56,7 @@ export default function Mensualite() {
           <input type="text" tabIndex={-1} autoComplete="off" />
         </label>
         <label>
-          Montant du prêt (€) :
+          {t("amountLabel")}
           <input
             type="number"
             min="0"
@@ -111,10 +65,11 @@ export default function Mensualite() {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             required
+            aria-label={t("amountLabel")}
           />
         </label>
         <label>
-          Taux annuel (%) :
+          {t("rateLabel")}
           <input
             type="number"
             min="0"
@@ -123,10 +78,11 @@ export default function Mensualite() {
             value={rate}
             onChange={(e) => setRate(e.target.value)}
             required
+            aria-label={t("rateLabel")}
           />
         </label>
         <label>
-          Durée (en années) :
+          {t("yearsLabel")}
           <input
             type="number"
             min="0"
@@ -135,27 +91,28 @@ export default function Mensualite() {
             value={years}
             onChange={(e) => setYears(e.target.value)}
             required
+            aria-label={t("yearsLabel")}
           />
         </label>
         <div className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
-          ⚠️ Les résultats sont donnés à titre indicatif.{" "}
+          {t("indicative")}
           <a href="#faq" className="underline">
-            En savoir plus
+            {t("learnMore")}
           </a>
         </div>
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
-          Coût annuel :{" "}
+          {t("coutAnnuelLabel")} {" "}
           <span className="text-lg font-bold">
             {result !== null
-              ? `${result.toLocaleString("fr-FR", {
+              ? `${result.toLocaleString(undefined, {
                   maximumFractionDigits: 2,
                 })} €`
               : "-- €"}
@@ -164,128 +121,56 @@ export default function Mensualite() {
       </form>
 
       <section className="mb-6">
-        <h2 className="text-xl font-semibold mb-2">
-          Comment calculer les mensualités d’un prêt ?
-        </h2>
-        <p>
-          Le calcul des mensualités d’un prêt est essentiel pour bien gérer son
-          budget. Il vous permet de savoir combien vous devrez rembourser chaque
-          mois pour un crédit immobilier, auto ou personnel. En connaissant le
-          montant des mensualités, vous pouvez évaluer si un emprunt est
-          compatible avec votre situation financière.
-        </p>
+        <h2 className="text-xl font-semibold mb-2">{t("howTitle")}</h2>
+        <p>{t("howDesc")}</p>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Comment est-ce calculé ?</h3>
-        <p>
-          Les mensualités d’un prêt sont calculées à l’aide d’une formule
-          mathématique qui tient compte de trois éléments principaux :
-        </p>
+        <h3 className="text-lg font-semibold mb-2">{t("howCalcTitle")}</h3>
+        <p>{t("howCalcDesc")}</p>
         <ul className="list-disc ml-6 mb-2">
-          <li>Le montant emprunté (ou capital)</li>
-          <li>La durée du prêt (en nombre de mois)</li>
-          <li>Le taux d’intérêt annuel (généralement exprimé en % fixe)</li>
+          <li>{t("howCalcList_0")}</li>
+          <li>{t("howCalcList_1")}</li>
+          <li>{t("howCalcList_2")}</li>
         </ul>
         <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm">
-          Mensualité = [Capital × Taux Mensuel] / [1 - (1 + Taux Mensuel)
-          <sup>(-Nombre de mensualités)</sup>]
+          {t("formula")}
         </div>
-        <p>
-          Le taux mensuel est obtenu en divisant le taux annuel par 12. Voici un
-          exemple :
-        </p>
-        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm">
-          Montant emprunté : 20 000 €<br />
-          Taux annuel : 3 %<br />
-          Durée : 5 ans (soit 60 mois)
-          <br />
-          <br />
-          Taux mensuel = 3 / 100 / 12 = 0,0025
-          <br />
-          Mensualité = [20 000 × 0,0025] / [1 - (1 + 0,0025)
-          <sup>(-60)</sup>] ≈ 359,37 €
-        </div>
-        <p>
-          Dans cet exemple, vous devrez rembourser environ 359,37 € chaque mois
-          pourtant 5 ans.
-        </p>
-      </section>
-
-      <section className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">
-          Comment le taux influence-t-il les mensualités ?
-        </h3>
-        <p>
-          Plus le taux d’intérêt est élevé, plus les mensualités seront
-          importantes. À l’inverse, un taux faible permet de réduire le coût
-          total du crédit. Il est donc important de comparer les offres de prêt
-          avant de s’engager.
-        </p>
-        <p>
-          De même, allonger la durée du prêt diminue le montant des mensualités,
-          mais augmente le coût total du crédit à cause des intérêts
-          supplémentaires. Voici une comparaison :
-        </p>
-        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm">
-          Montant emprunté : 20 000 € – Taux annuel : 3 %<br />
-          <br />
-          Durée de 5 ans → Mensualité ≈ 359 € – Coût total ≈ 21 562 €<br />
-          Durée de 10 ans → Mensualité ≈ 193 € – Coût total ≈ 23 160 €
+        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm whitespace-pre-line">
+          {t("howCalcExample")}
         </div>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">
-          Applications pratiques du calcul des mensualités
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("rateImpactTitle")}</h3>
+        <p>{t("rateImpactDesc")}</p>
+        <p>{t("rateImpactDesc2")}</p>
+        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm whitespace-pre-line">
+          {t("rateImpactExample")}
+        </div>
+      </section>
+
+      <section className="mb-6">
+        <h3 className="text-lg font-semibold mb-2">{t("practicalTitle")}</h3>
         <ul className="list-disc ml-6 mb-2">
-          <li>
-            <strong>Crédit immobilier :</strong> Estimer vos mensualités avant
-            de faire une offre d’achat pour un bien immobilier.
-          </li>
-          <li>
-            <strong>Crédit auto :</strong> Savoir à l’avance combien vous
-            coûtera votre voiture chaque mois.
-          </li>
-          <li>
-            <strong>Budget personnel :</strong> Ajuster vos dépenses en fonction
-            de vos remboursements mensuels.
-          </li>
-          <li>
-            <strong>Simulation comparative :</strong> Comparer plusieurs prêts
-            pour choisir celui qui correspond le mieux à vos besoins.
-          </li>
+          <li>{t("practicalList_0")}</li>
+          <li>{t("practicalList_1")}</li>
+          <li>{t("practicalList_2")}</li>
+          <li>{t("practicalList_3")}</li>
         </ul>
       </section>
 
       <section className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">
-          Pourquoi utiliser ce calcul ?
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">{t("whyTitle")}</h3>
         <ul className="list-disc ml-6 mb-2">
-          <li>
-            <strong>Anticiper l’impact sur votre budget :</strong> Vous saurez
-            précisément combien vous devrez payer chaque mois.
-          </li>
-          <li>
-            <strong>Éviter le surendettement :</strong> En simulant plusieurs
-            scénarios, vous pouvez éviter de vous engager dans un prêt trop
-            lourd à rembourser.
-          </li>
-          <li>
-            <strong>Négocier votre prêt :</strong> En connaissant les paramètres
-            du calcul, vous serez mieux armé pour discuter des conditions avec
-            votre banquier.
-          </li>
+          <li>{t("whyList_0")}</li>
+          <li>{t("whyList_1")}</li>
+          <li>{t("whyList_2")}</li>
         </ul>
       </section>
 
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Questions fréquentes sur le simulateur de mensualité de prêt
-          immobilier
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
