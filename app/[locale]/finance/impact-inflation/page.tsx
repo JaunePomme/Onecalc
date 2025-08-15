@@ -1,49 +1,10 @@
 "use client";
+
 import { useState } from "react";
-
-const faqData = [
-  {
-    question: "Comment est calculée la valeur future ou passée ?",
-    answer:
-      "La valeur future est calculée en appliquant le taux d’inflation composé sur la période choisie. La formule utilisée est : valeur future = valeur actuelle × (1 + inflation) ^ nombre d’années.",
-  },
-  {
-    question: "Le taux d’inflation doit-il être annuel ?",
-    answer:
-      "Oui, le taux d’inflation est exprimé en pourcentage annuel moyen.",
-  },
-  {
-    question: "Peut-on calculer la valeur passée à partir d’une valeur future ?",
-    answer:
-      "Oui, il suffit d’indiquer une valeur future et de calculer la valeur équivalente aujourd’hui en utilisant la même formule inversée.",
-  },
-];
-
-function calcFutureValue({
-  valeur,
-  inflation,
-  annees,
-}: {
-  valeur: number;
-  inflation: number;
-  annees: number;
-}) {
-  return valeur * Math.pow(1 + inflation / 100, annees);
-}
-
-function calcPresentValue({
-  valeur,
-  inflation,
-  annees,
-}: {
-  valeur: number;
-  inflation: number;
-  annees: number;
-}) {
-  return valeur / Math.pow(1 + inflation / 100, annees);
-}
+import { useTranslations } from "next-intl";
 
 export default function ImpactInflation() {
+  const t = useTranslations("ImpactInflation");
   const [mode, setMode] = useState<"future" | "present">("future");
   const [valeur, setValeur] = useState("");
   const [inflation, setInflation] = useState("");
@@ -51,6 +12,19 @@ export default function ImpactInflation() {
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number[]>([]);
+
+  // FAQ dynamique comme sur la page ROI
+  const faqData = Array.from({ length: 4 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`)
+  }));
+
+  function calcFutureValue(valeur: number, inflation: number, annees: number) {
+    return valeur * Math.pow(1 + inflation / 100, annees);
+  }
+  function calcPresentValue(valeur: number, inflation: number, annees: number) {
+    return valeur / Math.pow(1 + inflation / 100, annees);
+  }
 
   const handleCalc = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,23 +34,23 @@ export default function ImpactInflation() {
     const a = parseFloat(annees.replace(",", "."));
     if (isNaN(v) || v <= 0) {
       setResult(null);
-      setError("Veuillez saisir une valeur valide.");
+      setError(t("errorValeur"));
       return;
     }
     if (isNaN(i)) {
       setResult(null);
-      setError("Veuillez saisir un taux d’inflation valide.");
+      setError(t("errorInflation"));
       return;
     }
     if (isNaN(a) || a <= 0) {
       setResult(null);
-      setError("Veuillez saisir un nombre d’années valide.");
+      setError(t("errorAnnees"));
       return;
     }
     if (mode === "future") {
-      setResult(calcFutureValue({ valeur: v, inflation: i, annees: a }));
+      setResult(calcFutureValue(v, i, a));
     } else {
-      setResult(calcPresentValue({ valeur: v, inflation: i, annees: a }));
+      setResult(calcPresentValue(v, i, a));
     }
   };
 
@@ -87,22 +61,23 @@ export default function ImpactInflation() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Impact de l’inflation : valeur d’aujourd’hui vs futur
-      </h1>
-      <p className="mb-8">
-        Calculez la valeur future ou passée d’une somme en tenant compte de l’inflation annuelle moyenne.
-      </p>
+    <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title") + ' - ' + t("intro")}> 
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8" id="impact-inflation-intro">{t("intro")}</p>
 
-      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas une analyse financière professionnelle.
+      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite">
+        <strong>Disclaimer :</strong> {t("disclaimer")}
       </div>
 
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
+        aria-labelledby="impact-inflation-form-title"
+        aria-describedby="impact-inflation-intro impact-inflation-disclaimer"
+        role="form"
+        autoComplete="off"
       >
+        <h2 id="impact-inflation-form-title" className="sr-only">{t("title")}</h2>
         <div className="flex gap-4 mb-2">
           <label className="flex items-center gap-2">
             <input
@@ -112,7 +87,7 @@ export default function ImpactInflation() {
               checked={mode === "future"}
               onChange={() => setMode("future")}
             />
-            Calculer la valeur future
+            {t("modeFuture")}
           </label>
           <label className="flex items-center gap-2">
             <input
@@ -122,68 +97,79 @@ export default function ImpactInflation() {
               checked={mode === "present"}
               onChange={() => setMode("present")}
             />
-            Calculer la valeur actuelle
+            {t("modePresent")}
           </label>
         </div>
-        <label>
-          {mode === "future"
-            ? "Valeur aujourd’hui (€) :"
-            : "Valeur future (€) :"}
-          <input
-            type="number"
-            min="0"
-            step="any"
-            className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-            value={valeur}
-            onChange={e => setValeur(e.target.value)}
-            required
-          />
+        <label htmlFor="valeur-input" className="font-semibold">
+          {mode === "future" ? t("valeurAujLabel") : t("valeurFuturLabel")}
         </label>
-        <label>
-          Taux d’inflation annuel moyen (%) :
-          <input
-            type="number"
-            min="0"
-            step="any"
-            className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-            value={inflation}
-            onChange={e => setInflation(e.target.value)}
-            required
-          />
+        <input
+          id="valeur-input"
+          name="valeur"
+          type="number"
+          min="0"
+          step="any"
+          className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+          value={valeur}
+          onChange={e => setValeur(e.target.value)}
+          required
+          aria-required="true"
+          aria-label={mode === "future" ? t("valeurAujLabel") : t("valeurFuturLabel")}
+        />
+        <label htmlFor="inflation-input" className="font-semibold">
+          {t("inflationLabel")}
         </label>
-        <label>
-          Nombre d’années :
-          <input
-            type="number"
-            min="1"
-            step="1"
-            className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-            value={annees}
-            onChange={e => setAnnees(e.target.value)}
-            required
-          />
+        <input
+          id="inflation-input"
+          name="inflation"
+          type="number"
+          min="0"
+          step="any"
+          className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+          value={inflation}
+          onChange={e => setInflation(e.target.value)}
+          required
+          aria-required="true"
+          aria-label={t("inflationLabel")}
+        />
+        <label htmlFor="annees-input" className="font-semibold">
+          {t("anneesLabel")}
         </label>
+        <input
+          id="annees-input"
+          name="annees"
+          type="number"
+          min="1"
+          step="1"
+          className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+          value={annees}
+          onChange={e => setAnnees(e.target.value)}
+          required
+          aria-required="true"
+          aria-label={t("anneesLabel")}
+        />
         <button
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
+          aria-label={t("calculate")}
         >
-          Calculer
+          {t("calculate")}
         </button>
-        <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+        <div className="mt-2" aria-live="polite" aria-atomic="true">
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
           {error ? (
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <>
               <span className="text-lg font-bold">
-                {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} €
+                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
               </span>
               <br />
               <span className="text-xs text-gray-500">
                 {mode === "future"
-                  ? "Valeur équivalente dans " + annees + " an(s)"
-                  : "Valeur équivalente aujourd’hui"}
+                  ? t("resultFuture", { years: annees })
+                  : t("resultPresent")}
               </span>
             </>
           ) : (
@@ -192,15 +178,15 @@ export default function ImpactInflation() {
         </div>
       </form>
 
-      <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Impact de l’inflation
-        </h2>
+      <section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
+        <h2 className="text-xl font-semibold mb-4" id="faq-title">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
               key={idx}
               className="border rounded bg-gray-50 dark:bg-gray-900"
+              role="group"
+              aria-labelledby={`faq-question-${idx}`}
             >
               <button
                 type="button"
@@ -208,16 +194,19 @@ export default function ImpactInflation() {
                 onClick={() => toggleFaq(idx)}
                 aria-expanded={openFaq.includes(idx)}
                 aria-controls={`faq-panel-${idx}`}
+                id={`faq-question-${idx}`}
+                aria-label={item.question}
               >
                 {item.question}
-                <span className="ml-2">
-                  {openFaq.includes(idx) ? "▲" : "▼"}
-                </span>
+                <span className="ml-2" aria-hidden="true">{openFaq.includes(idx) ? "▲" : "▼"}</span>
               </button>
               {openFaq.includes(idx) && (
                 <div
                   id={`faq-panel-${idx}`}
                   className="px-4 pb-4 text-gray-700 dark:text-gray-200 animate-fade-in"
+                  role="region"
+                  aria-labelledby={`faq-question-${idx}`}
+                  tabIndex={0}
                 >
                   {item.answer}
                 </div>

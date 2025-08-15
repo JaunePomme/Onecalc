@@ -1,23 +1,6 @@
 "use client";
 import { useState } from "react";
-
-const faqData = [
-	{
-		question: "Qu’est-ce que le DCA (Dollar Cost Averaging) ?",
-		answer:
-			"Le DCA consiste à investir un montant fixe à intervalles réguliers, quelle que soit la variation du prix, afin de lisser le prix d’achat moyen dans le temps.",
-	},
-	{
-		question: "Quels paramètres sont pris en compte dans la simulation ?",
-		answer:
-			"Le montant investi à chaque période, la fréquence, la durée, et l’évolution du prix de l’actif (historique ou hypothétique).",
-	},
-	{
-		question: "Le simulateur prend-il en compte les frais ?",
-		answer:
-			"Non, ce simulateur ne prend pas en compte les éventuels frais de transaction ou d’achat.",
-	},
-];
+import { useTranslations } from "next-intl";
 
 function simulateDCA({
 	montant,
@@ -54,15 +37,19 @@ function simulateDCA({
 }
 
 export default function DcaPage() {
+	const t = useTranslations("DCA");
 	const [montant, setMontant] = useState("");
 	const [prixInitial, setPrixInitial] = useState("");
 	const [prixFinal, setPrixFinal] = useState("");
 	const [periodes, setPeriodes] = useState("");
-	const [result, setResult] = useState<ReturnType<typeof simulateDCA> | null>(
-		null
-	);
+	const [result, setResult] = useState<ReturnType<typeof simulateDCA> | null>(null);
 	const [error, setError] = useState<string | null>(null);
 	const [openFaq, setOpenFaq] = useState<number[]>([]);
+
+	const faqData = Array.from({ length: 4 }).map((_, idx) => ({
+		question: t(`faq_${idx}_question`),
+		answer: t(`faq_${idx}_answer`)
+	}));
 
 	const handleCalc = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -73,27 +60,25 @@ export default function DcaPage() {
 		const n = parseInt(periodes, 10);
 		if (isNaN(m) || m <= 0) {
 			setResult(null);
-			setError("Veuillez saisir un montant périodique valide.");
+			setError(t("errorAmount"));
 			return;
 		}
 		if (isNaN(pi) || pi <= 0) {
 			setResult(null);
-			setError("Veuillez saisir un prix initial valide.");
+			setError(t("errorPrixInitial"));
 			return;
 		}
 		if (isNaN(pf) || pf <= 0) {
 			setResult(null);
-			setError("Veuillez saisir un prix final valide.");
+			setError(t("errorPrixFinal"));
 			return;
 		}
 		if (isNaN(n) || n < 2) {
 			setResult(null);
-			setError("Veuillez saisir un nombre de périodes (≥2).");
+			setError(t("errorPeriodes"));
 			return;
 		}
-		setResult(
-			simulateDCA({ montant: m, prixInitial: pi, prixFinal: pf, periodes: n })
-		);
+		setResult(simulateDCA({ montant: m, prixInitial: pi, prixFinal: pf, periodes: n }));
 	};
 
 	const toggleFaq = (idx: number) => {
@@ -103,126 +88,119 @@ export default function DcaPage() {
 	};
 
 	return (
-		<main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-			<h1 className="text-3xl font-bold mb-4">
-				Simulateur DCA (achat périodique)
-			</h1>
-			<p className="mb-8">
-				Simulez l’investissement progressif (DCA) sur un actif en faisant des
-				achats réguliers.
-			</p>
+		<main className="max-w-2xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title") + ' - ' + t("intro")}> 
+			<h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+			<p className="mb-8">{t("intro")}</p>
 
-			<div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-				<strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas un
-				conseil financier ni ne prédit l’évolution réelle des marchés.
+			<div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite">
+				<strong>Disclaimer :</strong> {t("disclaimer")}
 			</div>
 
 			<form
 				onSubmit={handleCalc}
 				className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
+				aria-labelledby="dca-form-title"
+				aria-describedby="dca-intro dca-disclaimer"
+				role="form"
+				autoComplete="off"
 			>
-				<label>
-					Montant investi à chaque période (€) :
-					<input
-						type="number"
-						min="0"
-						step="any"
-						className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-						value={montant}
-						onChange={(e) => setMontant(e.target.value)}
-						required
-					/>
+				<h2 id="dca-form-title" className="sr-only">{t("title")}</h2>
+				<label htmlFor="amount-input" className="font-semibold">
+					{t("amountLabel")}
 				</label>
-				<label>
-					Prix initial de l’actif (€) :
-					<input
-						type="number"
-						min="0"
-						step="any"
-						className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-						value={prixInitial}
-						onChange={(e) => setPrixInitial(e.target.value)}
-						required
-					/>
+				<input
+					id="amount-input"
+					name="amount"
+					type="number"
+					min="0"
+					step="any"
+					className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+					value={montant}
+					onChange={e => setMontant(e.target.value)}
+					required
+					aria-required="true"
+					aria-label={t("amountLabel")}
+				/>
+				<label htmlFor="prix-initial-input" className="font-semibold">
+					{t("prixInitialLabel")}
 				</label>
-				<label>
-					Prix final de l’actif (€) :
-					<input
-						type="number"
-						min="0"
-						step="any"
-						className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-						value={prixFinal}
-						onChange={(e) => setPrixFinal(e.target.value)}
-						required
-					/>
+				<input
+					id="prix-initial-input"
+					name="prixInitial"
+					type="number"
+					min="0"
+					step="any"
+					className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+					value={prixInitial}
+					onChange={e => setPrixInitial(e.target.value)}
+					required
+					aria-required="true"
+					aria-label={t("prixInitialLabel")}
+				/>
+				<label htmlFor="prix-final-input" className="font-semibold">
+					{t("prixFinalLabel")}
 				</label>
-				<label>
-					Nombre de périodes (mois, semaines…) :
-					<input
-						type="number"
-						min="2"
-						step="1"
-						className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
-						value={periodes}
-						onChange={(e) => setPeriodes(e.target.value)}
-						required
-					/>
+				<input
+					id="prix-final-input"
+					name="prixFinal"
+					type="number"
+					min="0"
+					step="any"
+					className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+					value={prixFinal}
+					onChange={e => setPrixFinal(e.target.value)}
+					required
+					aria-required="true"
+					aria-label={t("prixFinalLabel")}
+				/>
+				<label htmlFor="periodes-input" className="font-semibold">
+					{t("periodesLabel")}
 				</label>
+				<input
+					id="periodes-input"
+					name="periodes"
+					type="number"
+					min="2"
+					step="1"
+					className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
+					value={periodes}
+					onChange={e => setPeriodes(e.target.value)}
+					required
+					aria-required="true"
+					aria-label={t("periodesLabel")}
+				/>
 				<button
 					type="submit"
 					className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
+					aria-label={t("calculate")}
 				>
-					Simuler
+					{t("calculate")}
 				</button>
-				<div className="mt-2">
-					<span className="font-semibold">Résultat :</span>
+				<div className="mt-2" aria-live="polite" aria-atomic="true">
+					<span className="font-semibold">{t("resultLabel")}</span>
 					<br />
 					{error ? (
 						<span className="text-red-600">{error}</span>
 					) : result ? (
 						<>
 							<span className="text-lg font-bold">
-								Total investi :{" "}
-								{result.totalInvesti.toLocaleString("fr-FR", {
-									maximumFractionDigits: 2,
-								})}{" "}
-								€
+								{t("totalInvestiLabel")} {result.totalInvesti.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
 							</span>
 							<br />
 							<span className="text-lg font-bold">
-								Quantité totale achetée :{" "}
-								{result.totalActif.toLocaleString("fr-FR", {
-									maximumFractionDigits: 6,
-								})}
+								{t("prixMoyenLabel")} {result.prixMoyen.toLocaleString(undefined, { maximumFractionDigits: 4 })} €
 							</span>
 							<br />
 							<span className="text-lg font-bold">
-								Prix d’achat moyen :{" "}
-								{result.prixMoyen.toLocaleString("fr-FR", {
-									maximumFractionDigits: 4,
-								})}{" "}
-								€
+								{t("valeurFinaleLabel")} {result.valeurFinale.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
 							</span>
 							<br />
 							<span className="text-lg font-bold">
-								Valeur finale :{" "}
-								{result.valeurFinale.toLocaleString("fr-FR", {
-									maximumFractionDigits: 2,
-								})}{" "}
-								€
+								{t("perfLabel")} {result.perf.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
 							</span>
 							<br />
 							<span className="text-lg font-bold">
-								Performance :{" "}
-								{result.perf.toLocaleString("fr-FR", {
-									maximumFractionDigits: 2,
-								})}{" "}
-								€ (
-								{result.perfPct.toLocaleString("fr-FR", {
-									maximumFractionDigits: 2,
-								})}{" "}
-								%)
+								{t("perfPctLabel")} {result.perfPct.toLocaleString(undefined, { maximumFractionDigits: 2 })} %
 							</span>
 						</>
 					) : (
@@ -231,13 +209,15 @@ export default function DcaPage() {
 				</div>
 			</form>
 
-			<section className="mb-6" id="faq">
-				<h2 className="text-xl font-semibold mb-4">FAQ - Simulateur DCA</h2>
+			<section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
+				<h2 className="text-xl font-semibold mb-4" id="faq-title">{t("faqTitle")}</h2>
 				<div className="flex flex-col gap-2">
 					{faqData.map((item, idx) => (
 						<div
 							key={idx}
 							className="border rounded bg-gray-50 dark:bg-gray-900"
+							role="group"
+							aria-labelledby={`faq-question-${idx}`}
 						>
 							<button
 								type="button"
@@ -245,16 +225,19 @@ export default function DcaPage() {
 								onClick={() => toggleFaq(idx)}
 								aria-expanded={openFaq.includes(idx)}
 								aria-controls={`faq-panel-${idx}`}
+								id={`faq-question-${idx}`}
+								aria-label={item.question}
 							>
 								{item.question}
-								<span className="ml-2">
-									{openFaq.includes(idx) ? "▲" : "▼"}
-								</span>
+								<span className="ml-2" aria-hidden="true">{openFaq.includes(idx) ? "▲" : "▼"}</span>
 							</button>
 							{openFaq.includes(idx) && (
 								<div
 									id={`faq-panel-${idx}`}
 									className="px-4 pb-4 text-gray-700 dark:text-gray-200 animate-fade-in"
+									role="region"
+									aria-labelledby={`faq-question-${idx}`}
+									tabIndex={0}
 								>
 									{item.answer}
 								</div>
