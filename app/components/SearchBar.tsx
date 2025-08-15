@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import {
     FaPiggyBank, FaChartLine, FaSolarPanel, FaMoneyBillWave, FaCalculator, FaBalanceScale,
     FaHeartbeat, FaRunning, FaFire, FaClock, FaCalendarAlt, FaWeight, FaUser, FaExchangeAlt,
@@ -357,6 +357,8 @@ function highlight(text: string, query: string) {
 export default function SearchBar() {
     const [query, setQuery] = useState("");
     const router = useRouter();
+    const params = useParams();
+    const locale = typeof params.locale === "string" ? params.locale : Array.isArray(params.locale) ? params.locale[0] : "fr";
 
     // Filtrage dynamique
     const filteredCategories =
@@ -398,7 +400,7 @@ export default function SearchBar() {
                             {cat.calculators.map((calc) => (
                                 <button
                                     key={calc.path}
-                                    onClick={() => router.push(calc.path)}
+                                    onClick={() => router.push(`/${locale}${calc.path}`)}
                                     className="flex flex-col items-center w-28 p-3 bg-gray-50 dark:bg-gray-800 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition cursor-pointer border border-transparent hover:border-blue-400"
                                 >
                                     <div>{calc.icon}</div>
