@@ -1,55 +1,23 @@
 "use client";
-import { useState } from "react";
 
-const faqData = [
-	{
-		question: "Comment calculer le rendement d’un investissement ?",
-		answer:
-			"Le calcul du rendement d’un investissement se fait en divisant le gain net généré par le montant investi initialement, puis en multipliant par 100 pour obtenir un pourcentage. Notre simulateur de rendement d’investissement vous aide à estimer ce taux facilement.",
-	},
-	{
-		question: "Pourquoi calculer le rendement de son investissement ?",
-		answer:
-			"Calculer le rendement d’un investissement permet de mesurer la rentabilité réelle de votre placement et de comparer différentes options comme les actions, l’immobilier ou l’épargne pour optimiser vos gains.",
-	},
-	{
-		question: "Qu’est-ce qu’un bon taux de rendement ?",
-		answer:
-			"Un bon taux de rendement dépend du type d’investissement et du risque associé. Par exemple, un rendement de 4 à 7 % est souvent considéré comme intéressant pour l’immobilier, tandis que les actions peuvent offrir des rendements plus élevés mais plus volatils.",
-	},
-	{
-		question:
-			"Faut-il prendre en compte les impôts dans le calcul du rendement ?",
-		answer:
-			"Oui, le rendement net d’un investissement doit inclure les impôts et frais éventuels pour refléter la rentabilité réelle de votre placement. Notre calculateur de rendement vous permet d’estimer ce montant plus précisément.",
-	},
-	{
-		question: "Quelle est la différence entre rendement et plus-value ?",
-		answer:
-			"Le rendement désigne le revenu régulier généré par un investissement (dividendes, loyers), tandis que la plus-value correspond au gain réalisé lors de la revente de l’actif à un prix supérieur à son prix d’achat.",
-	},
-	{
-		question: "Différence ROI/TRI ?",
-		answer:
-			"Le ROI (Return On Investment) mesure la rentabilité totale d’un investissement sur une période donnée, sans prendre en compte la durée. Le TRI (Taux de Rendement Interne) tient compte de la chronologie des flux de trésorerie et permet de comparer des investissements de durées différentes.",
-	},
-	{
-		question: "Que mettre dans coûts ?",
-		answer:
-			"Dans les coûts, il faut inclure tous les montants investis : prix d’achat, frais d’acquisition, travaux, frais de gestion, impôts, charges, etc. Plus l’estimation est précise, plus le calcul du rendement sera fiable.",
-	},
-	{
-		question: "ROI négatif ?",
-		answer:
-			"Un ROI négatif signifie que votre investissement a généré une perte : les coûts sont supérieurs aux gains. Cela peut arriver si les revenus sont insuffisants ou si la valeur de l’actif baisse.",
-	},
-];
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Roi() {
 	const [invested, setInvested] = useState("");
 	const [gains, setGains] = useState("");
 	const [result, setResult] = useState<null | number>(null);
-	const [openFaq, setOpenFaq] = useState<number[]>([]); // ← tableau d'index pour multi-ouverture
+	const [openFaq, setOpenFaq] = useState<number[]>([]);
+
+
+	const t = useTranslations("ROI");
+
+	// Reconstruire la FAQ à partir des clés plates (avec underscores)
+	const faqData = Array.from({ length: 8 }).map((_, idx) => ({
+		question: t(`faq_${idx}_question`),
+		answer: t(`faq_${idx}_answer`)
+	}));
 
 	const handleCalc = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -62,7 +30,6 @@ export default function Roi() {
 		}
 	};
 
-	// Fonction pour ouvrir/fermer plusieurs FAQ
 	const toggleFaq = (idx: number) => {
 		setOpenFaq((prev) =>
 			prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
@@ -71,18 +38,12 @@ export default function Roi() {
 
 	return (
 		<main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-			<h1 className="text-3xl font-bold mb-4">
-				Calculez facilement le rendement de votre investissement
-			</h1>
-			<p className="mb-8">
-				Calculez le rendement de votre investissement en fonction du montant
-				investi et des gains réalisés.
-			</p>
+			<h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+			<p className="mb-8">{t("intro")}</p>
 
 			{/* Disclaimer placé juste après l'intro */}
 			<div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-				<strong>Disclaimer :</strong> Indicateur simplifié ; ne remplace pas une
-				analyse complète.
+				<strong>Disclaimer :</strong> {t("disclaimer")}
 			</div>
 
 			<form
@@ -94,7 +55,7 @@ export default function Roi() {
 					<input type="text" tabIndex={-1} autoComplete="off" />
 				</label>
 				<label>
-					Montant investi (€) :
+					{t("investedLabel")}
 					<input
 						type="number"
 						min="0"
@@ -106,7 +67,7 @@ export default function Roi() {
 					/>
 				</label>
 				<label>
-					Gains réalisés (€) :
+					{t("gainsLabel")}
 					<input
 						type="number"
 						min="0"
@@ -118,21 +79,21 @@ export default function Roi() {
 					/>
 				</label>
 				<div className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2">
-					⚠️ Les résultats sont donnés à titre indicatif.{" "}
+					{t("indicative")} {" "}
 					<a href="#faq" className="underline">
-						En savoir plus
+						{t("learnMore")}
 					</a>
 				</div>
 				<button
 					type="submit"
 					className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
 				>
-					Calculer
+					{t("calculate")}
 				</button>
 				<div className="mt-2">
-					<span className="font-semibold">Résultat :</span>
+					<span className="font-semibold">{t("resultLabel")}</span>
 					<br />
-					Rendement :{" "}
+					{t("yieldLabel")} {" "}
 					<span className="text-lg font-bold">
 						{result !== null ? `${result.toFixed(2)} %` : "-- %"}
 					</span>
@@ -140,150 +101,86 @@ export default function Roi() {
 			</form>
 
 			<section className="mb-6">
-				<h2 className="text-xl font-semibold mb-2">
-					Comment calculer le rendement d&apos;un investissement&nbsp;?
-				</h2>
-				<p>
-					Le calcul du rendement est essentiel pour évaluer la rentabilité
-					d&apos;un investissement. Il permet de savoir combien de gains un bien
-					génère par rapport à son coût initial. Cela peut s&apos;appliquer à
-					divers types d&apos;investissements, tels que l&apos;immobilier, les
-					actions, ou les biens d&apos;entreprise.
-				</p>
+				<h2 className="text-xl font-semibold mb-2">{t("howTitle")}</h2>
+				<p>{t("howDesc")}</p>
 			</section>
 
 			<section className="mb-6">
-				<h3 className="text-lg font-semibold mb-2">
-					Comment est-ce calculé&nbsp;?
-				</h3>
-				<p>
-					Il existe différentes façons de calculer le rendement d&apos;un
-					investissement :
-				</p>
+				<h3 className="text-lg font-semibold mb-2">{t("howCalcTitle")}</h3>
+				<p>{t("howCalcDesc")}</p>
 				<ul className="list-disc ml-6 mb-2">
 					<li>
-						<strong>Rendement brut</strong> : le rendement est calculé avant la
-						prise en compte de certains frais (comme les impôts ou les charges).
+						<strong>{t("grossYield")}</strong>: {t("grossYieldDesc")}
 					</li>
 					<li>
-						<strong>Rendement net</strong> : le rendement prend en compte les
-						charges, impôts, et autres coûts pour donner une image plus précise
-						de la rentabilité réelle.
+						<strong>{t("netYield")}</strong>: {t("netYieldDesc")}
 					</li>
 				</ul>
 			</section>
 
 			<section className="mb-6">
-				<h4 className="font-semibold mb-1">Rendement brut</h4>
-				<p>
-					La formule de base pour calculer le rendement brut est la suivante :
-				</p>
+				<h4 className="font-semibold mb-1">{t("grossYield")}</h4>
+				<p>{t("grossFormula")}</p>
 				<div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono">
-					Rendement brut = (Gains / Coût d&apos;achat) × 100
+					{t("grossFormula")}
 				</div>
-				<p className="mb-1">Exemple :</p>
+				<p className="mb-1">{t("grossExampleTitle")}</p>
 				<ul className="list-disc ml-6 mb-2">
-					<li>Coût d&apos;achat : 100 000 €</li>
-					<li>Gains annuels : 8 000 €</li>
+					{[0, 1].map((i) => (
+						<li key={i}>{t(`grossExampleList_${i}`)}</li>
+					))}
 				</ul>
 				<div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono">
-					Rendement brut = (8 000 / 100 000) × 100 = 8 %
+					{t("grossExampleResult")}
 				</div>
-				<p>
-					Dans cet exemple, le rendement brut est de 8 %, ce qui signifie que le
-					bien génère un revenu annuel équivalent à 8 % de son prix d&apos;achat.
-				</p>
+				<p>{t("grossExampleDesc")}</p>
 			</section>
 
 			<section className="mb-6">
-				<h4 className="font-semibold mb-1">Rendement net</h4>
-				<p>
-					Le rendement net prend en compte les frais associés au bien, comme les
-					taxes, les charges d&apos;entretien, ou les frais de gestion. La formule
-					devient :
-				</p>
+				<h4 className="font-semibold mb-1">{t("netYield")}</h4>
+				<p>{t("netFormula")}</p>
 				<div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono">
-					Rendement net = (Gains - Frais) / Coût d&apos;achat × 100
+					{t("netFormula")}
 				</div>
-				<p className="mb-1">Exemple :</p>
+				<p className="mb-1">{t("netExampleTitle")}</p>
 				<ul className="list-disc ml-6 mb-2">
-					<li>Coût d&apos;achat : 100 000 €</li>
-					<li>Gains annuels : 8 000 €</li>
-					<li>Frais annuels (charges, impôts, etc.) : 1 500 €</li>
+					{[0, 1, 2].map((i) => (
+						<li key={i}>{t(`netExampleList_${i}`)}</li>
+					))}
 				</ul>
 				<div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono">
-					Rendement net = (8 000 - 1 500) / 100 000 × 100 = 6,5 %
+					{t("netExampleResult")}
 				</div>
-				<p>
-					Le rendement net dans cet exemple est de 6,5 %, ce qui est plus
-					précis, car il tient compte des dépenses réelles associées au bien.
-				</p>
+				<p>{t("netExampleDesc")}</p>
 			</section>
 
 			<section className="mb-6">
-				<h3 className="text-lg font-semibold mb-2">
-					Pourquoi utiliser le calcul du rendement d&apos;un bien&nbsp;?
-				</h3>
-				<p>
-					Calculer le rendement d&apos;un bien est essentiel pour prendre des
-					décisions éclairées sur les investissements. Cela permet de comparer
-					différents biens ou investissements afin de choisir celui qui offre le
-					meilleur retour sur investissement.
-				</p>
+				<h3 className="text-lg font-semibold mb-2">{t("whyTitle")}</h3>
+				<p>{t("whyDesc")}</p>
 			</section>
 
 			<section className="mb-6">
-				<h3 className="text-lg font-semibold mb-2">
-					Applications pratiques du calcul du rendement
-				</h3>
+				<h3 className="text-lg font-semibold mb-2">{t("practicalTitle")}</h3>
 				<ul className="list-disc ml-6 mb-2">
-					<li>
-						<strong>Investissements immobiliers</strong> : Calculer le rendement
-						d&apos;un bien immobilier permet de savoir si l&apos;achat d&apos;un bien
-						est rentable en fonction de ses revenus locatifs.
-					</li>
-					<li>
-						<strong>Investissements en actions</strong> : Calculer le rendement
-						d&apos;un portefeuille d&apos;actions permet de mesurer la rentabilité
-						des dividendes et des gains en capital.
-					</li>
-					<li>
-						<strong>Évaluations d&apos;entreprise</strong> : Le rendement peut
-						également être utilisé pour évaluer la rentabilité d&apos;un bien ou
-						d&apos;un actif d&apos;entreprise.
-					</li>
+					{[0, 1, 2].map((i) => (
+						<li key={i}>{t(`practicalList_${i}`)}</li>
+					))}
 				</ul>
 			</section>
 
 			<section className="mb-6">
-				<h3 className="text-lg font-semibold mb-2">
-					Pourquoi utiliser ce calcul&nbsp;?
-				</h3>
+				<h3 className="text-lg font-semibold mb-2">{t("whyUseTitle")}</h3>
 				<ul className="list-disc ml-6 mb-2">
-					<li>
-						<strong>Évaluer la rentabilité</strong> : Le rendement permet de
-						connaître la rentabilité d&apos;un investissement en comparaison de
-						son côut initial.
-					</li>
-					<li>
-						<strong>Comparer des options d&apos;investissement</strong> : En
-						calculant le rendement de différents biens, on peut faire un choix
-						plus judicieux en fonction de l&apos;objectif d&apos;investissement.
-					</li>
-					<li>
-						<strong>Optimiser les investissements</strong> : Calculer le
-						rendement permet d&apos;ajuster les stratégies d&apos;investissement
-						pour maximiser les profits et minimiser les risques.
-					</li>
+					{[0, 1, 2].map((i) => (
+						<li key={i}>{t(`whyUseList_${i}`)}</li>
+					))}
 				</ul>
 			</section>
 
 			<section className="mb-6" id="faq">
-				<h2 className="text-xl font-semibold mb-4">
-					FAQ - Questions fréquentes sur le calcul du rendement d’investissement
-				</h2>
+				<h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
 				<div className="flex flex-col gap-2">
-					{faqData.map((item, idx) => (
+					{faqData.map((item: any, idx: number) => (
 						<div
 							key={idx}
 							className="border rounded bg-gray-50 dark:bg-gray-900"
