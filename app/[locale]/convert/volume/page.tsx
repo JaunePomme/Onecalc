@@ -1,23 +1,6 @@
 "use client";
 import { useState } from "react";
-
-const faqData = [
-  {
-    question: "Quels volumes puis-je calculer ici ?",
-    answer:
-      "Vous pouvez calculer le volume d’un cylindre (ex : bouteille, tube), d’une boîte/parallélépipède (ex : carton, aquarium) ou d’une pièce (ex : chambre, salon).",
-  },
-  {
-    question: "Quelles unités utiliser ?",
-    answer:
-      "Saisissez les dimensions en mètres pour obtenir le volume en mètres cubes (m³). Pour des litres, multipliez le résultat par 1000.",
-  },
-  {
-    question: "À quoi servent ces calculs ?",
-    answer:
-      "Ils servent à estimer la capacité d’un contenant, le volume d’une pièce pour le chauffage/climatisation, etc.",
-  },
-];
+import { useTranslations } from "next-intl";
 
 function volumeCylindre(rayon: number, hauteur: number) {
   return Math.PI * rayon * rayon * hauteur;
@@ -28,6 +11,7 @@ function volumeBoite(longueur: number, largeur: number, hauteur: number) {
 }
 
 export default function VolumePage() {
+  const t = useTranslations("Volume");
   const [type, setType] = useState<"cylindre" | "boite">("cylindre");
   const [rayon, setRayon] = useState("");
   const [hauteur, setHauteur] = useState("");
@@ -45,7 +29,7 @@ export default function VolumePage() {
       const h = parseFloat(hauteur.replace(",", "."));
       if (isNaN(r) || r <= 0 || isNaN(h) || h <= 0) {
         setResult(null);
-        setError("Veuillez saisir un rayon et une hauteur valides.");
+        setError(t("errorCylindre"));
         return;
       }
       setResult(volumeCylindre(r, h));
@@ -55,7 +39,7 @@ export default function VolumePage() {
       const h = parseFloat(hauteur.replace(",", "."));
       if (isNaN(l) || l <= 0 || isNaN(L) || L <= 0 || isNaN(h) || h <= 0) {
         setResult(null);
-        setError("Veuillez saisir des dimensions valides.");
+        setError(t("errorBoite"));
         return;
       }
       setResult(volumeBoite(l, L, h));
@@ -68,19 +52,18 @@ export default function VolumePage() {
     );
   };
 
+  const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+    question: t(`faq_${idx}_question`),
+    answer: t(`faq_${idx}_answer`),
+  }));
+
   return (
     <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-      <h1 className="text-3xl font-bold mb-4">
-        Calculateur de volume (cylindre / boîte / pièce)
-      </h1>
-      <p className="mb-8">
-        Calculez le volume d’un cylindre (ex : bouteille), d’une boîte ou d’une pièce (parallélépipède rectangle) en mètres cubes (m³).
-      </p>
-
+      <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+      <p className="mb-8">{t("intro")}</p>
       <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-        <strong>Disclaimer :</strong> Résultat indicatif, à vérifier pour les usages professionnels.
+        <strong>{t("disclaimer")}</strong>
       </div>
-
       <form
         onSubmit={handleCalc}
         className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
@@ -94,7 +77,7 @@ export default function VolumePage() {
               checked={type === "cylindre"}
               onChange={() => setType("cylindre")}
             />
-            Cylindre
+            {t("cylindre")}
           </label>
           <label className="flex items-center gap-2">
             <input
@@ -104,32 +87,32 @@ export default function VolumePage() {
               checked={type === "boite"}
               onChange={() => setType("boite")}
             />
-            Boîte / Pièce
+            {t("boite")}
           </label>
         </div>
         {type === "cylindre" ? (
           <>
             <label>
-              Rayon (m) :
+              {t("rayonLabel")}
               <input
                 type="number"
                 min="0"
                 step="any"
                 className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
                 value={rayon}
-                onChange={e => setRayon(e.target.value)}
+                onChange={(e) => setRayon(e.target.value)}
                 required
               />
             </label>
             <label>
-              Hauteur (m) :
+              {t("hauteurLabel")}
               <input
                 type="number"
                 min="0"
                 step="any"
                 className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
                 value={hauteur}
-                onChange={e => setHauteur(e.target.value)}
+                onChange={(e) => setHauteur(e.target.value)}
                 required
               />
             </label>
@@ -137,38 +120,38 @@ export default function VolumePage() {
         ) : (
           <>
             <label>
-              Longueur (m) :
+              {t("longueurLabel")}
               <input
                 type="number"
                 min="0"
                 step="any"
                 className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
                 value={longueur}
-                onChange={e => setLongueur(e.target.value)}
+                onChange={(e) => setLongueur(e.target.value)}
                 required
               />
             </label>
             <label>
-              Largeur (m) :
+              {t("largeurLabel")}
               <input
                 type="number"
                 min="0"
                 step="any"
                 className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
                 value={largeur}
-                onChange={e => setLargeur(e.target.value)}
+                onChange={(e) => setLargeur(e.target.value)}
                 required
               />
             </label>
             <label>
-              Hauteur (m) :
+              {t("hauteurLabel")}
               <input
                 type="number"
                 min="0"
                 step="any"
                 className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
                 value={hauteur}
-                onChange={e => setHauteur(e.target.value)}
+                onChange={(e) => setHauteur(e.target.value)}
                 required
               />
             </label>
@@ -178,10 +161,10 @@ export default function VolumePage() {
           type="submit"
           className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
         >
-          Calculer
+          {t("calculate")}
         </button>
         <div className="mt-2">
-          <span className="font-semibold">Résultat :</span>
+          <span className="font-semibold">{t("resultLabel")}</span>
           <br />
           {error ? (
             <span className="text-red-600">{error}</span>
@@ -192,7 +175,7 @@ export default function VolumePage() {
               </span>
               <br />
               <span className="text-xs text-gray-500">
-                Soit {(result * 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} litres
+                {t("liters", { value: (result * 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) })}
               </span>
             </>
           ) : (
@@ -202,9 +185,7 @@ export default function VolumePage() {
       </form>
 
       <section className="mb-6" id="faq">
-        <h2 className="text-xl font-semibold mb-4">
-          FAQ - Calcul du volume
-        </h2>
+        <h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div

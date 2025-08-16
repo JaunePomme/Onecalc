@@ -1,32 +1,9 @@
 "use client";
 import { useState } from "react";
-
-const faqData = [
-	{
-		question: "Qu’est-ce que la VAN (NPV) ?",
-		answer:
-			"La Valeur Actuelle Nette (VAN ou NPV en anglais) est la somme actualisée de tous les flux de trésorerie d’un investissement, en tenant compte d’un taux d’actualisation. Elle permet d’évaluer la rentabilité d’un projet.",
-	},
-	{
-		question: "Comment saisir les flux ?",
-		answer:
-			"Indiquez le montant investi (négatif) puis les flux de retour (positifs ou négatifs) pour chaque période, séparés par des virgules. Exemple : -1000, 200, 300, 400, 500.",
-	},
-	{
-		question: "Quel taux d’actualisation choisir ?",
-		answer:
-			"Le taux d’actualisation reflète le coût du capital ou le rendement attendu. Il dépend du contexte de votre projet.",
-	},
-];
-
-function npv(rate: number, cashflows: number[]): number {
-	return cashflows.reduce(
-		(acc, cf, t) => acc + cf / Math.pow(1 + rate, t),
-		0
-	);
-}
+import { useTranslations } from "next-intl";
 
 export default function VanPage() {
+	const t = useTranslations("Van");
 	const [flux, setFlux] = useState("");
 	const [rate, setRate] = useState("");
 	const [result, setResult] = useState<number | null>(null);
@@ -43,15 +20,17 @@ export default function VanPage() {
 		const r = parseFloat(rate.replace(",", ".")) / 100;
 		if (flows.length < 2) {
 			setResult(null);
-			setError("Veuillez saisir au moins deux flux (investissement et retours).");
+			setError(t("errorFlux"));
 			return;
 		}
 		if (isNaN(r)) {
 			setResult(null);
-			setError("Veuillez saisir un taux d’actualisation valide.");
+			setError(t("errorRate"));
 			return;
 		}
-		setResult(npv(r, flows));
+		setResult(
+			flows.reduce((acc, cf, t) => acc + cf / Math.pow(1 + r, t), 0)
+		);
 	};
 
 	const toggleFaq = (idx: number) => {
@@ -60,27 +39,24 @@ export default function VanPage() {
 		);
 	};
 
+	const faqData = Array.from({ length: 3 }).map((_, idx) => ({
+		question: t(`faq_${idx}_question`),
+		answer: t(`faq_${idx}_answer`),
+	}));
+
 	return (
 		<main className="max-w-2xl mx-auto py-12 px-4 sm:px-8">
-			<h1 className="text-3xl font-bold mb-4">
-				Calculateur de VAN / NPV (simple)
-			</h1>
-			<p className="mb-8">
-				Calculez la Valeur Actuelle Nette (VAN/NPV) d’un investissement à partir
-				de vos flux de trésorerie et d’un taux d’actualisation.
-			</p>
-
+			<h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
+			<p className="mb-8">{t("intro")}</p>
 			<div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800">
-				<strong>Disclaimer :</strong> Résultat indicatif, ne remplace pas une
-				analyse financière professionnelle.
+				<strong>{t("disclaimer")}</strong>
 			</div>
-
 			<form
 				onSubmit={handleCalc}
 				className="mb-6 flex flex-col gap-4 bg-gray-50 dark:bg-gray-900 p-4 rounded shadow"
 			>
 				<label>
-					Flux de trésorerie (séparés par des virgules) :
+					{t("fluxLabel")}
 					<input
 						type="text"
 						className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 font-mono"
@@ -91,7 +67,7 @@ export default function VanPage() {
 					/>
 				</label>
 				<label>
-					Taux d’actualisation (%) :
+					{t("rateLabel")}
 					<input
 						type="number"
 						step="any"
@@ -106,10 +82,10 @@ export default function VanPage() {
 					type="submit"
 					className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition mt-2"
 				>
-					Calculer
+					{t("calculate")}
 				</button>
 				<div className="mt-2">
-					<span className="font-semibold">Résultat :</span>
+					<span className="font-semibold">{t("resultLabel")}</span>
 					<br />
 					{error ? (
 						<span className="text-red-600">{error}</span>
@@ -129,9 +105,7 @@ export default function VanPage() {
 			</form>
 
 			<section className="mb-6" id="faq">
-				<h2 className="text-xl font-semibold mb-4">
-					FAQ - Calcul de la VAN / NPV
-				</h2>
+				<h2 className="text-xl font-semibold mb-4">{t("faqTitle")}</h2>
 				<div className="flex flex-col gap-2">
 					{faqData.map((item, idx) => (
 						<div
