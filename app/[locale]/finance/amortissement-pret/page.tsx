@@ -2,6 +2,22 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
+interface AmortissementRow {
+  mois: number;
+  mensualite: number;
+  interet: number;
+  capital: number;
+  assurance: number;
+  capitalRestant: number;
+}
+
+interface AmortissementResult {
+  tableau: AmortissementRow[];
+  totalInterets: number;
+  totalAssurance: number;
+  dureeReelle: number;
+}
+
 function calculerAmortissement(
   montant: number,
   taux: number,
@@ -12,7 +28,7 @@ function calculerAmortissement(
   const mensualiteHorsAss =
     (montant * (taux / 12)) / (1 - Math.pow(1 + taux / 12, -duree * 12));
   let capitalRestant = montant;
-  const tableau: any[] = [];
+  const tableau: AmortissementRow[] = [];
   let totalInterets = 0;
   let totalAssurance = 0;
   let mois = 1;
@@ -74,7 +90,7 @@ export default function AmortissementPret() {
   >([]);
   const [moisRemb, setMoisRemb] = useState("");
   const [montantRemb, setMontantRemb] = useState("");
-  const [result, setResult] = useState<any | null>(null);
+  const [result, setResult] = useState<AmortissementResult | null>(null);
   const [openFaq, setOpenFaq] = useState<number[]>([]);
 
   const handleAddRemboursement = () => {

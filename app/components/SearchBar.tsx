@@ -5,7 +5,6 @@ import { useTranslations } from "next-intl";
 import {
   FaPiggyBank,
   FaChartLine,
-  FaSolarPanel,
   FaMoneyBillWave,
   FaCalculator,
   FaBalanceScale,
@@ -24,9 +23,6 @@ import {
   FaStopwatch,
   FaBirthdayCake,
   FaPercent,
-  FaEuroSign,
-  FaArrowUp,
-  FaArrowDown,
   FaProjectDiagram,
   FaCoins,
   FaChartPie,
@@ -38,7 +34,6 @@ import {
   FaFlask,
   FaDivide,
   FaEquals,
-  FaListOl,
   FaHome,
   FaDumbbell,
 } from "react-icons/fa";
@@ -668,12 +663,6 @@ export default function SearchBar() {
       ),
     );
   }
-
-  const categoryStyle = {
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto pt-8 px-4">

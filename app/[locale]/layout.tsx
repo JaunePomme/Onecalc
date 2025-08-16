@@ -2,8 +2,6 @@ export const dynamicParams = true;
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
-import Image from "next/image";
-import Link from "next/link";
 import "../globals.css";
 import ToggleThemeButton from "../components/ToggleThemeButton";
 import Header from "../components/Header";
@@ -47,7 +45,6 @@ export default async function RootLayout(props: {
       usedLocale = shortLocale;
     } catch {
       notFound();
-      return null;
     }
   }
 

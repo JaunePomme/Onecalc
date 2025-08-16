@@ -21,9 +21,10 @@ export default function Clause() {
           Les outils de calcul et simulateurs disponibles sur ce site sont
           proposés à titre indicatif uniquement. Ils ne constituent en aucun cas
           un conseil financier, juridique, fiscal ou professionnel.
-          L'utilisateur est seul responsable de l'interprétation et de
-          l’utilisation des résultats obtenus. Avant toute prise de décision
-          importante, nous recommandons de consulter un professionnel qualifié.
+          L&apos;utilisateur est seul responsable de l&apos;interprétation et de
+          l&apos;utilisation des résultats obtenus. Avant toute prise de
+          décision importante, nous recommandons de consulter un professionnel
+          qualifié.
         </p>
       </section>
 
@@ -33,19 +34,20 @@ export default function Clause() {
           En aucun cas, ce site, ses auteurs, éditeurs ou toute autre personne
           liée à son exploitation ne sauraient être tenus pour responsables des
           pertes, dommages ou conséquences directes ou indirectes résultant de
-          l'utilisation ou de l’impossibilité d'utiliser les contenus, outils ou
-          services proposés. Ceci inclut notamment les pertes financières,
-          erreurs de calcul, décisions erronées ou tout autre préjudice.
+          l&apos;utilisation ou de l&apos;impossibilité d&apos;utiliser les
+          contenus, outils ou services proposés. Ceci inclut notamment les
+          pertes financières, erreurs de calcul, décisions erronées ou tout
+          autre préjudice.
         </p>
       </section>
 
       <section className="mb-6">
         <h2 className="text-xl font-semibold mb-2">Liens externes</h2>
         <p>
-          Ce site peut contenir des liens vers d'autres sites web ou ressources
-          externes. Nous n'avons aucun contrôle sur le contenu de ces sites et
-          déclinons toute responsabilité quant à leur disponibilité, exactitude
-          ou légalité.
+          Ce site peut contenir des liens vers d&apos;autres sites web ou
+          ressources externes. Nous n&apos;avons aucun contrôle sur le contenu
+          de ces sites et déclinons toute responsabilité quant à leur
+          disponibilité, exactitude ou légalité.
         </p>
       </section>
 
@@ -64,7 +66,7 @@ export default function Clause() {
         <h2 className="text-xl font-semibold mb-2">Modifications</h2>
         <p>
           Nous nous réservons le droit de modifier cette clause de
-          non-responsabilité à tout moment, sans préavis. L'utilisateur est
+          non-responsabilité à tout moment, sans préavis. L&apos;utilisateur est
           invité à consulter régulièrement cette page pour prendre connaissance
           d’éventuelles mises à jour.
         </p>

@@ -66,7 +66,7 @@ export default function Mentions() {
         </ul>
         <p>
           Les données du formulaire sont conservées uniquement pour répondre à
-          votre demande et ne sont pas utilisées à d'autres fins.
+          votre demande et ne sont pas utilisées à d&apos;autres fins.
         </p>
       </section>
 
@@ -75,7 +75,7 @@ export default function Mentions() {
         <p>Ce site utilise des cookies via Google AdSense pour :</p>
         <ul className="list-disc ml-6 mb-2">
           <li>Diffuser des publicités ciblées</li>
-          <li>Mesurer l'audience du site</li>
+          <li>Mesurer l&apos;audience du site</li>
           <li>Optimiser le positionnement des annonces</li>
         </ul>
         <p>
@@ -91,9 +91,9 @@ export default function Mentions() {
           disposez des droits suivants :
         </p>
         <ul className="list-disc ml-6 mb-2">
-          <li>Droit d'accès à vos données</li>
+          <li>Droit d&apos;accès à vos données</li>
           <li>Droit de rectification</li>
-          <li>Droit à l'effacement</li>
+          <li>Droit à l&apos;effacement</li>
           <li>Droit à la portabilité</li>
         </ul>
         <p>

@@ -53,7 +53,9 @@ export default function RGPD() {
           <li>Diffusion de publicités pertinentes (via AdSense, si accepté)</li>
           <li>Répondre à vos demandes de contact</li>
         </ul>
-        <p>Aucun traitement supplémentaire n'est effectué sur ces données.</p>
+        <p>
+          Aucun traitement supplémentaire n&apos;est effectué sur ces données.
+        </p>
       </section>
 
       <section className="mb-6">

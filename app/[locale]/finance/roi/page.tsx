@@ -265,40 +265,48 @@ export default function Roi() {
           {t("faqTitle")}
         </h2>
         <div className="flex flex-col gap-2">
-          {faqData.map((item: any, idx: number) => (
-            <div
-              key={idx}
-              className="border rounded bg-gray-50 dark:bg-gray-900"
-              role="group"
-              aria-labelledby={`faq-question-${idx}`}
-            >
-              <button
-                type="button"
-                className="w-full text-left px-4 py-3 font-semibold focus:outline-none flex justify-between items-center"
-                onClick={() => toggleFaq(idx)}
-                aria-expanded={openFaq.includes(idx)}
-                aria-controls={`faq-panel-${idx}`}
-                id={`faq-question-${idx}`}
-                aria-label={item.question}
+          {faqData.map(
+            (
+              item: {
+                question: string;
+                answer: string;
+              },
+              idx: number,
+            ) => (
+              <div
+                key={idx}
+                className="border rounded bg-gray-50 dark:bg-gray-900"
+                role="group"
+                aria-labelledby={`faq-question-${idx}`}
               >
-                {item.question}
-                <span className="ml-2" aria-hidden="true">
-                  {openFaq.includes(idx) ? "▲" : "▼"}
-                </span>
-              </button>
-              {openFaq.includes(idx) && (
-                <div
-                  id={`faq-panel-${idx}`}
-                  className="px-4 pb-4 text-gray-700 dark:text-gray-200 animate-fade-in"
-                  role="region"
-                  aria-labelledby={`faq-question-${idx}`}
-                  tabIndex={0}
+                <button
+                  type="button"
+                  className="w-full text-left px-4 py-3 font-semibold focus:outline-none flex justify-between items-center"
+                  onClick={() => toggleFaq(idx)}
+                  aria-expanded={openFaq.includes(idx)}
+                  aria-controls={`faq-panel-${idx}`}
+                  id={`faq-question-${idx}`}
+                  aria-label={item.question}
                 >
-                  {item.answer}
-                </div>
-              )}
-            </div>
-          ))}
+                  {item.question}
+                  <span className="ml-2" aria-hidden="true">
+                    {openFaq.includes(idx) ? "▲" : "▼"}
+                  </span>
+                </button>
+                {openFaq.includes(idx) && (
+                  <div
+                    id={`faq-panel-${idx}`}
+                    className="px-4 pb-4 text-gray-700 dark:text-gray-200 animate-fade-in"
+                    role="region"
+                    aria-labelledby={`faq-question-${idx}`}
+                    tabIndex={0}
+                  >
+                    {item.answer}
+                  </div>
+                )}
+              </div>
+            ),
+          )}
         </div>
       </section>
     </main>

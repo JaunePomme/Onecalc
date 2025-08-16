@@ -16,8 +16,8 @@ export default function Politique() {
           </li>
         </ul>
         <p>
-          Nous ne collectons pas d'informations personnelles telles que nom,
-          adresse, email (sauf via le formulaire de contact), numéro de
+          Nous ne collectons pas d&apos;informations personnelles telles que
+          nom, adresse, email (sauf via le formulaire de contact), numéro de
           téléphone, etc., en dehors de ces deux cas spécifiques.
         </p>
       </section>
@@ -36,8 +36,8 @@ export default function Politique() {
           </li>
         </ul>
         <p>
-          Nous n'utilisons pas vos données pour personnaliser votre expérience
-          utilisateur ou à d'autres fins non mentionnées ici.
+          Nous n&apos;utilisons pas vos données pour personnaliser votre
+          expérience utilisateur ou à d&apos;autres fins non mentionnées ici.
         </p>
       </section>
 
@@ -49,9 +49,9 @@ export default function Politique() {
         </p>
         <ul className="list-disc ml-6 mb-2">
           <li>
-            Personnaliser les annonces en fonction de vos centres d'intérêt
+            Personnaliser les annonces en fonction de vos centres d&apos;intérêt
           </li>
-          <li>Mesurer l'efficacité des publicités</li>
+          <li>Mesurer l&apos;efficacité des publicités</li>
         </ul>
         <p>
           Ces cookies sont uniquement placés si vous acceptez les cookies
@@ -59,8 +59,8 @@ export default function Politique() {
           paramètres de votre navigateur.
         </p>
         <p>
-          En dehors d'AdSense, notre site n'utilise aucun cookie de suivi ou
-          analytique.
+          En dehors d&apos;AdSense, notre site n&apos;utilise aucun cookie de
+          suivi ou analytique.
         </p>
       </section>
 

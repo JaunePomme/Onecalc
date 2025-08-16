@@ -1,5 +1,5 @@
 "use client";
-import { usePathname, useParams, useRouter } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import Link from "next/link";
 
 const locales = [
