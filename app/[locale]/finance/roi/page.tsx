@@ -41,7 +41,7 @@ export default function Roi() {
     url.searchParams.set("gains", gains);
     navigator.clipboard.writeText(url.toString()).then(() => {
       setShowPopup(true);
-      setTimeout(() => setShowPopup(false), 3000);
+      setTimeout(() => setShowPopup(false), 2000);
     });
   };
 

@@ -331,7 +331,7 @@ export default function AmortissementPret() {
                 </tr>
               </thead>
               <tbody>
-                {result.tableau.map((row: any) => (
+                {result.tableau.map((row: AmortissementRow) => (
                   <tr
                     key={row.mois}
                     className={

@@ -24,6 +24,25 @@ export const metadata: Metadata = {
   description: "Tool for calculating anything, anywhere, anytime.",
 };
 
+async function loadMessages(locale: string) {
+  try {
+    return {
+      messages: (await import(`../../messages/${locale}.json`)).default,
+      usedLocale: locale,
+    };
+  } catch {
+    const shortLocale = locale.split("-")[0];
+    try {
+      return {
+        messages: (await import(`../../messages/${shortLocale}.json`)).default,
+        usedLocale: shortLocale,
+      };
+    } catch {
+      notFound();
+    }
+  }
+}
+
 export default async function RootLayout(props: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -34,32 +53,7 @@ export default async function RootLayout(props: {
   // Import bidon pour satisfaire Next.js avant d'accéder à params.locale
   await import("../../messages/fr.json");
 
-  let messages;
-  let usedLocale = locale;
-  try {
-    messages = (await import(`../../messages/${locale}.json`)).default;
-  } catch (error) {
-    const shortLocale = locale.split("-")[0];
-    try {
-      messages = (await import(`../../messages/${shortLocale}.json`)).default;
-      usedLocale = shortLocale;
-    } catch {
-      notFound();
-    }
-  }
-
-  if (!messages) {
-    return (
-      <html lang={usedLocale}>
-        <body>
-          <div style={{ color: "red", padding: 32 }}>
-            Erreur : messages de traduction introuvables pour la locale « 
-            {usedLocale} ».
-          </div>
-        </body>
-      </html>
-    );
-  }
+  const { messages, usedLocale } = await loadMessages(locale);
 
   return (
     <html lang={usedLocale} data-scroll-behavior="smooth">
