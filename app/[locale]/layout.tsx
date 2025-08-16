@@ -26,7 +26,6 @@ export const metadata: Metadata = {
   description: "Tool for calculating anything, anywhere, anytime.",
 };
 
-
 export default async function RootLayout(props: {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
