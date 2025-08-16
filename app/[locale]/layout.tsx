@@ -26,43 +26,6 @@ export const metadata: Metadata = {
   description: "Tool for calculating anything, anywhere, anytime.",
 };
 
-const navLinks = [
-  {
-    href: "/finance/roi",
-    label: "ROI",
-    icon: "💹",
-  },
-  {
-    href: "/finance/dca",
-    label: "DCA",
-    icon: "📈",
-  },
-  {
-    href: "/finance/interets-composes",
-    label: "Intérêts composés",
-    icon: "🧮",
-  },
-  {
-    href: "/finance/amortissement-pret",
-    label: "Amortissement prêt",
-    icon: "🏦",
-  },
-  {
-    href: "/convert/units",
-    label: "Unités",
-    icon: "🔄",
-  },
-  {
-    href: "/convert/volume",
-    label: "Volume",
-    icon: "🧪",
-  },
-  {
-    href: "/health/imc",
-    label: "IMC",
-    icon: "⚖️",
-  },
-];
 
 export default async function RootLayout(props: {
   children: React.ReactNode;
