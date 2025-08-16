@@ -162,6 +162,7 @@
     "about": "Allez à la page à propos"
   },
   "ROI": {
+    "linkCopied":"Lien copié",
     "title": "Calculez facilement le rendement de votre investissement",
     "intro": "Calculez le rendement de votre investissement en fonction du montant investi et des gains réalisées.",
     "disclaimer": "Indicateur simplifié ; ne remplace pas une analyse complète.",

@@ -165,6 +165,7 @@
     "about": "Go to the about page"
   },
   "ROI": {
+    "linkCopied":"Link copied",
     "title": "Easily calculate your investment return",
     "intro": "Calculate the return on your investment based on the amount invested and the gains achieved.",
     "disclaimer": "Simplified indicator; does not replace a full analysis.",

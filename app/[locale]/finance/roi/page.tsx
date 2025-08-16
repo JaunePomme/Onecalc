@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 
 export default function Roi() {
@@ -8,6 +8,7 @@ export default function Roi() {
   const [gains, setGains] = useState("");
   const [result, setResult] = useState<null | number>(null);
   const [openFaq, setOpenFaq] = useState<number[]>([]);
+  const [showPopup, setShowPopup] = useState(false);
 
   const t = useTranslations("ROI");
 
@@ -33,6 +34,33 @@ export default function Roi() {
       prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
+
+  const handleShare = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("invested", invested);
+    url.searchParams.set("gains", gains);
+    navigator.clipboard.writeText(url.toString()).then(() => {
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 3000);
+    });
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const investedParam = urlParams.get("invested");
+    const gainsParam = urlParams.get("gains");
+
+    if (investedParam) setInvested(investedParam);
+    if (gainsParam) setGains(gainsParam);
+
+    if (investedParam && gainsParam) {
+      const investedNum = parseFloat(investedParam.replace(",", "."));
+      const gainsNum = parseFloat(gainsParam.replace(",", "."));
+      if (!isNaN(investedNum) && investedNum !== 0 && !isNaN(gainsNum)) {
+        setResult((gainsNum / investedNum) * 100);
+      }
+    }
+  }, []);
 
   return (
     <main
@@ -128,6 +156,27 @@ export default function Roi() {
           </span>
         </div>
       </form>
+
+      <div className="flex justify-end mt-4">
+        <button
+          type="button"
+          onClick={handleShare}
+          className="p-2 bg-gray-200 dark:bg-gray-700 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          // aria-label={t("share")}
+        >
+          🔗
+        </button>
+      </div>
+
+      {showPopup && (
+        <div
+          className="fixed bottom-1/2 right-1/2 transform translate-x-1/2 translate-y-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-lg"
+          role="alert"
+          aria-live="polite"
+        >
+          {t("linkCopied")}
+        </div>
+      )}
 
       <section className="mb-6">
         <h2 className="text-xl font-semibold mb-2">{t("howTitle")}</h2>
