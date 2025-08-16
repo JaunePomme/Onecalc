@@ -9,6 +9,7 @@ import ToggleThemeButton from "../components/ToggleThemeButton";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { NextIntlClientProvider } from "next-intl";
+import Head from "next/head";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,7 +69,7 @@ export default async function RootLayout(props: {
   params: Promise<{ locale: string }>;
 }) {
   const { children, params } = props;
-  const { locale } = await params; // ✅ attendre params avant d'utiliser locale
+  const { locale } = await params; // ✅ attendre params avant d'accéder à params.locale
 
   // Import bidon pour satisfaire Next.js avant d'accéder à params.locale
   await import("../../messages/fr.json");
@@ -103,6 +104,11 @@ export default async function RootLayout(props: {
 
   return (
     <html lang={usedLocale} data-scroll-behavior="smooth">
+      <Head>
+        <link rel="alternate" href="/en" hrefLang="en" />
+        <link rel="alternate" href="/fr" hrefLang="fr" />
+        <link rel="alternate" href="/" hrefLang="x-default" />
+      </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 min-h-screen flex flex-col`}
       >
@@ -122,4 +128,3 @@ export default async function RootLayout(props: {
     </html>
   );
 }
-// ...
