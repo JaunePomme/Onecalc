@@ -6,7 +6,7 @@ function calculateBAC(
   weight: number,
   drinks: number,
   hours: number,
-  gender: "male" | "female"
+  gender: "male" | "female",
 ) {
   const alcoholDistributionRatio = gender === "male" ? 0.68 : 0.55;
   const gramsOfAlcohol = drinks * 14; // Approximation: 14g of alcohol per standard drink

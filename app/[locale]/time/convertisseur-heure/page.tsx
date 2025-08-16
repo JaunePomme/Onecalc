@@ -12,7 +12,10 @@ export default function TimeConverterPage() {
   const t = useTranslations("TimeConverter");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
-  const [result, setResult] = useState<{ totalMinutes: number; totalSeconds: number } | null>(null);
+  const [result, setResult] = useState<{
+    totalMinutes: number;
+    totalSeconds: number;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleConvert = (e: React.FormEvent) => {
@@ -21,7 +24,12 @@ export default function TimeConverterPage() {
     try {
       const numHours = parseInt(hours, 10);
       const numMinutes = parseInt(minutes, 10);
-      if (isNaN(numHours) || isNaN(numMinutes) || numHours < 0 || numMinutes < 0) {
+      if (
+        isNaN(numHours) ||
+        isNaN(numMinutes) ||
+        numHours < 0 ||
+        numMinutes < 0
+      ) {
         throw new Error(t("errorInvalid"));
       }
       setResult(convertTime(numHours, numMinutes));
@@ -79,7 +87,10 @@ export default function TimeConverterPage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {t("result", { minutes: result.totalMinutes, seconds: result.totalSeconds })}
+              {t("result", {
+                minutes: result.totalMinutes,
+                seconds: result.totalSeconds,
+              })}
             </span>
           ) : (
             "--"

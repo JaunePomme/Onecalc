@@ -16,7 +16,7 @@ export default function ImpactInflation() {
   // FAQ dynamique comme sur la page ROI
   const faqData = Array.from({ length: 4 }).map((_, idx) => ({
     question: t(`faq_${idx}_question`),
-    answer: t(`faq_${idx}_answer`)
+    answer: t(`faq_${idx}_answer`),
   }));
 
   function calcFutureValue(valeur: number, inflation: number, annees: number) {
@@ -56,16 +56,26 @@ export default function ImpactInflation() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
   return (
-    <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title") + ' - ' + t("intro")}> 
+    <main
+      className="max-w-2xl mx-auto py-12 px-4 sm:px-8"
+      role="main"
+      aria-label={t("title") + " - " + t("intro")}
+    >
       <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
-      <p className="mb-8" id="impact-inflation-intro">{t("intro")}</p>
+      <p className="mb-8" id="impact-inflation-intro">
+        {t("intro")}
+      </p>
 
-      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite">
+      <div
+        className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800"
+        role="note"
+        aria-live="polite"
+      >
         <strong>Disclaimer :</strong> {t("disclaimer")}
       </div>
 
@@ -77,7 +87,9 @@ export default function ImpactInflation() {
         role="form"
         autoComplete="off"
       >
-        <h2 id="impact-inflation-form-title" className="sr-only">{t("title")}</h2>
+        <h2 id="impact-inflation-form-title" className="sr-only">
+          {t("title")}
+        </h2>
         <div className="flex gap-4 mb-2">
           <label className="flex items-center gap-2">
             <input
@@ -111,10 +123,12 @@ export default function ImpactInflation() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={valeur}
-          onChange={e => setValeur(e.target.value)}
+          onChange={(e) => setValeur(e.target.value)}
           required
           aria-required="true"
-          aria-label={mode === "future" ? t("valeurAujLabel") : t("valeurFuturLabel")}
+          aria-label={
+            mode === "future" ? t("valeurAujLabel") : t("valeurFuturLabel")
+          }
         />
         <label htmlFor="inflation-input" className="font-semibold">
           {t("inflationLabel")}
@@ -127,7 +141,7 @@ export default function ImpactInflation() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={inflation}
-          onChange={e => setInflation(e.target.value)}
+          onChange={(e) => setInflation(e.target.value)}
           required
           aria-required="true"
           aria-label={t("inflationLabel")}
@@ -143,7 +157,7 @@ export default function ImpactInflation() {
           step="1"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={annees}
-          onChange={e => setAnnees(e.target.value)}
+          onChange={(e) => setAnnees(e.target.value)}
           required
           aria-required="true"
           aria-label={t("anneesLabel")}
@@ -163,7 +177,8 @@ export default function ImpactInflation() {
           ) : result !== null ? (
             <>
               <span className="text-lg font-bold">
-                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
+                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                €
               </span>
               <br />
               <span className="text-xs text-gray-500">
@@ -178,8 +193,15 @@ export default function ImpactInflation() {
         </div>
       </form>
 
-      <section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
-        <h2 className="text-xl font-semibold mb-4" id="faq-title">{t("faqTitle")}</h2>
+      <section
+        className="mb-6"
+        id="faq"
+        aria-labelledby="faq-title"
+        role="region"
+      >
+        <h2 className="text-xl font-semibold mb-4" id="faq-title">
+          {t("faqTitle")}
+        </h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div
@@ -198,7 +220,9 @@ export default function ImpactInflation() {
                 aria-label={item.question}
               >
                 {item.question}
-                <span className="ml-2" aria-hidden="true">{openFaq.includes(idx) ? "▲" : "▼"}</span>
+                <span className="ml-2" aria-hidden="true">
+                  {openFaq.includes(idx) ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq.includes(idx) && (
                 <div

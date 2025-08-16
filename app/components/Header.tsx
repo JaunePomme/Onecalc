@@ -4,7 +4,6 @@ import Image from "next/image";
 import LocaleSwitcher from "./LocaleSwitcher";
 import { useParams } from "next/navigation";
 
-
 const navLinks = [
   {
     href: "/#epargne-investissement",
@@ -45,7 +44,12 @@ const navLinks = [
 
 export default function Header() {
   const params = useParams();
-  const locale = typeof params.locale === "string" ? params.locale : Array.isArray(params.locale) ? params.locale[0] : "fr";
+  const locale =
+    typeof params.locale === "string"
+      ? params.locale
+      : Array.isArray(params.locale)
+        ? params.locale[0]
+        : "fr";
 
   return (
     <header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 sticky top-0 z-30">
@@ -69,7 +73,7 @@ export default function Header() {
           {navLinks.map((nav) => (
             <Link
               key={nav.href}
-              href={`/${locale ? locale : ''}${nav.href}`.replace('//', '/')}
+              href={`/${locale ? locale : ""}${nav.href}`.replace("//", "/")}
               className="flex items-center gap-1 px-1.5 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900 transition text-gray-700 dark:text-gray-200 font-medium"
               style={{ minWidth: 0 }}
               prefetch={false}

@@ -2,18 +2,17 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-
-
 function calculerAmortissement(
   montant: number,
   taux: number,
   duree: number,
   assurance: number,
-  remboursements: { mois: number; montant: number }[]
+  remboursements: { mois: number; montant: number }[],
 ) {
-  const mensualiteHorsAss = montant * (taux / 12) / (1 - Math.pow(1 + taux / 12, -duree * 12));
+  const mensualiteHorsAss =
+    (montant * (taux / 12)) / (1 - Math.pow(1 + taux / 12, -duree * 12));
   let capitalRestant = montant;
-  let tableau: any[] = [];
+  const tableau: any[] = [];
   let totalInterets = 0;
   let totalAssurance = 0;
   let mois = 1;
@@ -70,7 +69,9 @@ export default function AmortissementPret() {
   const [taux, setTaux] = useState("");
   const [duree, setDuree] = useState("");
   const [assurance, setAssurance] = useState("");
-  const [remboursements, setRemboursements] = useState<{ mois: number; montant: number }[]>([]);
+  const [remboursements, setRemboursements] = useState<
+    { mois: number; montant: number }[]
+  >([]);
   const [moisRemb, setMoisRemb] = useState("");
   const [montantRemb, setMontantRemb] = useState("");
   const [result, setResult] = useState<any | null>(null);
@@ -80,7 +81,9 @@ export default function AmortissementPret() {
     const mois = parseInt(moisRemb, 10);
     const montant = parseFloat(montantRemb.replace(",", "."));
     if (!isNaN(mois) && mois > 0 && !isNaN(montant) && montant > 0) {
-      setRemboursements([...remboursements, { mois, montant }].sort((a, b) => a.mois - b.mois));
+      setRemboursements(
+        [...remboursements, { mois, montant }].sort((a, b) => a.mois - b.mois),
+      );
       setMoisRemb("");
       setMontantRemb("");
     }
@@ -92,7 +95,14 @@ export default function AmortissementPret() {
     const tauxNum = parseFloat(taux.replace(",", ".")) / 100;
     const d = parseInt(duree, 10);
     const a = parseFloat(assurance.replace(",", ".")) || 0;
-    if (isNaN(m) || isNaN(tauxNum) || isNaN(d) || m <= 0 || tauxNum < 0 || d <= 0) {
+    if (
+      isNaN(m) ||
+      isNaN(tauxNum) ||
+      isNaN(d) ||
+      m <= 0 ||
+      tauxNum < 0 ||
+      d <= 0
+    ) {
       setResult(null);
       return;
     }
@@ -101,12 +111,16 @@ export default function AmortissementPret() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
   return (
-    <main className="max-w-3xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title")}> 
+    <main
+      className="max-w-3xl mx-auto py-12 px-4 sm:px-8"
+      role="main"
+      aria-label={t("title")}
+    >
       <h1 className="text-3xl font-bold mb-4" id="amort-title">
         {t("title")}
       </h1>
@@ -114,7 +128,12 @@ export default function AmortissementPret() {
         {t("intro")}
       </p>
 
-      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite" id="amort-disclaimer">
+      <div
+        className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800"
+        role="note"
+        aria-live="polite"
+        id="amort-disclaimer"
+      >
         <strong>Disclaimer :</strong> {t("disclaimer")}
       </div>
 
@@ -126,7 +145,9 @@ export default function AmortissementPret() {
         role="form"
         autoComplete="off"
       >
-        <h2 id="amort-form-title" className="sr-only">{t("title")}</h2>
+        <h2 id="amort-form-title" className="sr-only">
+          {t("title")}
+        </h2>
         <label htmlFor="montant-input" className="font-semibold">
           {t("montantLabel")}
         </label>
@@ -139,7 +160,7 @@ export default function AmortissementPret() {
           inputMode="decimal"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={montant}
-          onChange={e => setMontant(e.target.value)}
+          onChange={(e) => setMontant(e.target.value)}
           required
           aria-required="true"
           aria-label={t("montantLabel")}
@@ -156,7 +177,7 @@ export default function AmortissementPret() {
           inputMode="decimal"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={taux}
-          onChange={e => setTaux(e.target.value)}
+          onChange={(e) => setTaux(e.target.value)}
           required
           aria-required="true"
           aria-label={t("tauxLabel")}
@@ -173,7 +194,7 @@ export default function AmortissementPret() {
           inputMode="numeric"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={duree}
-          onChange={e => setDuree(e.target.value)}
+          onChange={(e) => setDuree(e.target.value)}
           required
           aria-required="true"
           aria-label={t("dureeLabel")}
@@ -190,7 +211,7 @@ export default function AmortissementPret() {
           inputMode="decimal"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={assurance}
-          onChange={e => setAssurance(e.target.value)}
+          onChange={(e) => setAssurance(e.target.value)}
           aria-label={t("assuranceLabel")}
         />
         <div className="flex flex-col md:flex-row gap-2 items-end">
@@ -207,7 +228,7 @@ export default function AmortissementPret() {
               inputMode="numeric"
               className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
               value={moisRemb}
-              onChange={e => setMoisRemb(e.target.value)}
+              onChange={(e) => setMoisRemb(e.target.value)}
               placeholder="ex: 24"
               aria-label={t("moisRembLabel")}
             />
@@ -225,7 +246,7 @@ export default function AmortissementPret() {
               inputMode="decimal"
               className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
               value={montantRemb}
-              onChange={e => setMontantRemb(e.target.value)}
+              onChange={(e) => setMontantRemb(e.target.value)}
               placeholder="ex: 5000"
               aria-label={t("montantRembLabel")}
             />
@@ -240,7 +261,10 @@ export default function AmortissementPret() {
           </button>
         </div>
         {remboursements.length > 0 && (
-          <div className="text-sm text-gray-700 dark:text-gray-200 mt-2" id="amort-remb-list">
+          <div
+            className="text-sm text-gray-700 dark:text-gray-200 mt-2"
+            id="amort-remb-list"
+          >
             <strong>{t("remboursements")}</strong>{" "}
             {remboursements.map((r, i) => (
               <span key={i} className="inline-block mr-2">
@@ -265,10 +289,18 @@ export default function AmortissementPret() {
             <strong>{t("dureeReelle")}</strong> {result.dureeReelle} {t("mois")}
           </div>
           <div className="mb-2">
-            <strong>{t("totalInterets")}</strong> {result.totalInterets.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
+            <strong>{t("totalInterets")}</strong>{" "}
+            {result.totalInterets.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}{" "}
+            €
           </div>
           <div className="mb-2">
-            <strong>{t("totalAssurance")}</strong> {result.totalAssurance.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
+            <strong>{t("totalAssurance")}</strong>{" "}
+            {result.totalAssurance.toLocaleString(undefined, {
+              maximumFractionDigits: 2,
+            })}{" "}
+            €
           </div>
           <div className="overflow-x-auto mt-4">
             <table className="min-w-full text-xs border">
@@ -284,13 +316,40 @@ export default function AmortissementPret() {
               </thead>
               <tbody>
                 {result.tableau.map((row: any) => (
-                  <tr key={row.mois} className={row.capitalRestant === 0 ? "bg-green-50 dark:bg-green-900" : ""}>
+                  <tr
+                    key={row.mois}
+                    className={
+                      row.capitalRestant === 0
+                        ? "bg-green-50 dark:bg-green-900"
+                        : ""
+                    }
+                  >
                     <td className="p-2 border">{row.mois}</td>
-                    <td className="p-2 border">{row.mensualite.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
-                    <td className="p-2 border">{row.interet.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
-                    <td className="p-2 border">{row.capital.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
-                    <td className="p-2 border">{row.assurance.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
-                    <td className="p-2 border">{row.capitalRestant.toLocaleString(undefined, { maximumFractionDigits: 2 })}</td>
+                    <td className="p-2 border">
+                      {row.mensualite.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td className="p-2 border">
+                      {row.interet.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td className="p-2 border">
+                      {row.capital.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td className="p-2 border">
+                      {row.assurance.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
+                    <td className="p-2 border">
+                      {row.capitalRestant.toLocaleString(undefined, {
+                        maximumFractionDigits: 2,
+                      })}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -299,7 +358,12 @@ export default function AmortissementPret() {
         </div>
       )}
 
-      <section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
+      <section
+        className="mb-6"
+        id="faq"
+        aria-labelledby="faq-title"
+        role="region"
+      >
         <h2 className="text-xl font-semibold mb-4" id="faq-title">
           {t("faqTitle")}
         </h2>

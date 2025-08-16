@@ -11,7 +11,7 @@ function irr(cashflows: number[], guess = 0.1): number | null {
     for (let t = 0; t < cashflows.length; t++) {
       npv += cashflows[t] / Math.pow(1 + rate, t);
       if (t > 0) {
-        dnpv -= t * cashflows[t] / Math.pow(1 + rate, t + 1);
+        dnpv -= (t * cashflows[t]) / Math.pow(1 + rate, t + 1);
       }
     }
     if (Math.abs(npv) < 1e-7) return rate;
@@ -52,7 +52,7 @@ export default function TriPage() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -78,7 +78,7 @@ export default function TriPage() {
             type="text"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800 font-mono"
             value={flux}
-            onChange={e => setFlux(e.target.value)}
+            onChange={(e) => setFlux(e.target.value)}
             placeholder={t("fluxPlaceholder")}
             required
             aria-label={t("fluxLabel")}
@@ -97,7 +97,10 @@ export default function TriPage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {(result * 100).toLocaleString(undefined, { maximumFractionDigits: 4 })} %
+              {(result * 100).toLocaleString(undefined, {
+                maximumFractionDigits: 4,
+              })}{" "}
+              %
             </span>
           ) : (
             "--"
@@ -120,7 +123,9 @@ export default function TriPage() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
+                <span className="ml-2">
+                  {openFaq.includes(idx) ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq.includes(idx) && (
                 <div

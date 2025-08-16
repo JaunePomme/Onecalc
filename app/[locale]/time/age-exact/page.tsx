@@ -17,7 +17,11 @@ function calculateExactAge(birthDate: string) {
 export default function ExactAgePage() {
   const t = useTranslations("ExactAge");
   const [birthDate, setBirthDate] = useState("");
-  const [result, setResult] = useState<{ years: number; months: number; days: number } | null>(null);
+  const [result, setResult] = useState<{
+    years: number;
+    months: number;
+    days: number;
+  } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleCalc = (e: React.FormEvent) => {
@@ -69,7 +73,11 @@ export default function ExactAgePage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {t("result", { years: result.years, months: result.months, days: result.days })}
+              {t("result", {
+                years: result.years,
+                months: result.months,
+                days: result.days,
+              })}
             </span>
           ) : (
             "--"

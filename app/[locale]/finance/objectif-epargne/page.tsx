@@ -1,4 +1,3 @@
-
 "use client";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -84,7 +83,7 @@ export default function ObjectifEpargne() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -112,7 +111,7 @@ export default function ObjectifEpargne() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={objectif}
-            onChange={e => setObjectif(e.target.value)}
+            onChange={(e) => setObjectif(e.target.value)}
             required
             aria-label={t("objectifLabel")}
           />
@@ -125,7 +124,7 @@ export default function ObjectifEpargne() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={capital}
-            onChange={e => setCapital(e.target.value)}
+            onChange={(e) => setCapital(e.target.value)}
             aria-label={t("capitalLabel")}
           />
         </label>
@@ -137,7 +136,7 @@ export default function ObjectifEpargne() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={taux}
-            onChange={e => setTaux(e.target.value)}
+            onChange={(e) => setTaux(e.target.value)}
             placeholder="0"
             aria-label={t("tauxLabel")}
           />
@@ -148,7 +147,7 @@ export default function ObjectifEpargne() {
             type="date"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={date}
-            onChange={e => setDate(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}
             required
             aria-label={t("dateLabel")}
           />
@@ -167,7 +166,8 @@ export default function ObjectifEpargne() {
           ) : result !== null && nbMois !== null ? (
             <>
               <span className="text-lg font-bold">
-                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })} € / {t("perMonth")}
+                {result.toLocaleString(undefined, { maximumFractionDigits: 2 })}{" "}
+                € / {t("perMonth")}
               </span>
               <br />
               <span className="text-xs text-gray-500">
@@ -196,7 +196,9 @@ export default function ObjectifEpargne() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
+                <span className="ml-2">
+                  {openFaq.includes(idx) ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq.includes(idx) && (
                 <div

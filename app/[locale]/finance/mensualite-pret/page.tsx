@@ -1,4 +1,3 @@
-
 "use client";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -31,7 +30,7 @@ export default function MensualitePret() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -109,7 +108,7 @@ export default function MensualitePret() {
         <div className="mt-2">
           <span className="font-semibold">{t("resultLabel")}</span>
           <br />
-          {t("coutAnnuelLabel")} {" "}
+          {t("coutAnnuelLabel")}{" "}
           <span className="text-lg font-bold">
             {result !== null
               ? `${result.toLocaleString(undefined, {
@@ -185,7 +184,9 @@ export default function MensualitePret() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
+                <span className="ml-2">
+                  {openFaq.includes(idx) ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq.includes(idx) && (
                 <div

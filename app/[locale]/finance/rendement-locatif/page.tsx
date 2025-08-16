@@ -49,12 +49,20 @@ export default function RendementLocatif() {
       setResult(null);
       return;
     }
-    setResult(calcRendement({ loyerAnnuel: l, prixAchat: p, fraisAnnexes: f, chargesAnnuelles: c, apport: a }));
+    setResult(
+      calcRendement({
+        loyerAnnuel: l,
+        prixAchat: p,
+        fraisAnnexes: f,
+        chargesAnnuelles: c,
+        apport: a,
+      }),
+    );
   };
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -86,7 +94,7 @@ export default function RendementLocatif() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={loyer}
-            onChange={e => setLoyer(e.target.value)}
+            onChange={(e) => setLoyer(e.target.value)}
             required
             aria-label={t("loyerLabel")}
           />
@@ -99,7 +107,7 @@ export default function RendementLocatif() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={prix}
-            onChange={e => setPrix(e.target.value)}
+            onChange={(e) => setPrix(e.target.value)}
             required
             aria-label={t("prixLabel")}
           />
@@ -112,7 +120,7 @@ export default function RendementLocatif() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={frais}
-            onChange={e => setFrais(e.target.value)}
+            onChange={(e) => setFrais(e.target.value)}
             aria-label={t("fraisLabel")}
           />
         </label>
@@ -124,7 +132,7 @@ export default function RendementLocatif() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={charges}
-            onChange={e => setCharges(e.target.value)}
+            onChange={(e) => setCharges(e.target.value)}
             aria-label={t("chargesLabel")}
           />
         </label>
@@ -136,7 +144,7 @@ export default function RendementLocatif() {
             step="any"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={apport}
-            onChange={e => setApport(e.target.value)}
+            onChange={(e) => setApport(e.target.value)}
             aria-label={t("apportLabel")}
           />
         </label>
@@ -152,15 +160,28 @@ export default function RendementLocatif() {
           {result ? (
             <>
               <span className="text-lg font-bold">
-                {t("brutLabel")} {result.rendementBrut.toLocaleString(undefined, { maximumFractionDigits: 2 })} %
+                {t("brutLabel")}{" "}
+                {result.rendementBrut.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}{" "}
+                %
               </span>
               <br />
               <span className="text-lg font-bold">
-                {t("netLabel")} {result.rendementNet.toLocaleString(undefined, { maximumFractionDigits: 2 })} %
+                {t("netLabel")}{" "}
+                {result.rendementNet.toLocaleString(undefined, {
+                  maximumFractionDigits: 2,
+                })}{" "}
+                %
               </span>
               <br />
               <span className="text-lg font-bold">
-                {t("cocLabel")} {result.cashOnCash !== null ? result.cashOnCash.toLocaleString(undefined, { maximumFractionDigits: 2 }) + " %" : "--"}
+                {t("cocLabel")}{" "}
+                {result.cashOnCash !== null
+                  ? result.cashOnCash.toLocaleString(undefined, {
+                      maximumFractionDigits: 2,
+                    }) + " %"
+                  : "--"}
               </span>
             </>
           ) : (
@@ -185,7 +206,9 @@ export default function RendementLocatif() {
                 aria-controls={`faq-panel-${idx}`}
               >
                 {item.question}
-                <span className="ml-2">{openFaq.includes(idx) ? "▲" : "▼"}</span>
+                <span className="ml-2">
+                  {openFaq.includes(idx) ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq.includes(idx) && (
                 <div

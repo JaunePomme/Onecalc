@@ -19,7 +19,12 @@ export default function Vo2MaxEstimePage() {
     try {
       const numDistance = parseFloat(distance.replace(",", "."));
       const numTime = parseFloat(time.replace(",", "."));
-      if (isNaN(numDistance) || isNaN(numTime) || numDistance <= 0 || numTime <= 0) {
+      if (
+        isNaN(numDistance) ||
+        isNaN(numTime) ||
+        numDistance <= 0 ||
+        numTime <= 0
+      ) {
         throw new Error(t("errorInvalid"));
       }
       setResult(calculateVO2Max(numDistance, numTime));
@@ -77,7 +82,8 @@ export default function Vo2MaxEstimePage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} mL/kg/min
+              {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })}{" "}
+              mL/kg/min
             </span>
           ) : (
             "--"

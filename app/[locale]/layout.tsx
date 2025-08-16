@@ -63,9 +63,10 @@ const navLinks = [
   },
 ];
 
-export default async function RootLayout(
-  props: { children: React.ReactNode; params: Promise<{ locale: string }> }
-) {
+export default async function RootLayout(props: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
   const { children, params } = props;
   const { locale } = await params; // ✅ attendre params avant d'utiliser locale
 
@@ -91,8 +92,9 @@ export default async function RootLayout(
     return (
       <html lang={usedLocale}>
         <body>
-          <div style={{color: 'red', padding: 32}}>
-            Erreur : messages de traduction introuvables pour la locale « {usedLocale} ».
+          <div style={{ color: "red", padding: 32 }}>
+            Erreur : messages de traduction introuvables pour la locale « 
+            {usedLocale} ».
           </div>
         </body>
       </html>

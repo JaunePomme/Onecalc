@@ -53,7 +53,7 @@ export default function TimeZoneDifferencePage() {
             type="text"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={zone1}
-            onChange={e => setZone1(e.target.value)}
+            onChange={(e) => setZone1(e.target.value)}
             required
           />
         </label>
@@ -63,7 +63,7 @@ export default function TimeZoneDifferencePage() {
             type="text"
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={zone2}
-            onChange={e => setZone2(e.target.value)}
+            onChange={(e) => setZone2(e.target.value)}
             required
           />
         </label>

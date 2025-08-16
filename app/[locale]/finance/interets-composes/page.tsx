@@ -17,7 +17,7 @@ export default function Interets() {
   }>(null);
   const faqData = Array.from({ length: 3 }).map((_, idx) => ({
     question: t(`faq_${idx}_question`),
-    answer: t(`faq_${idx}_answer`)
+    answer: t(`faq_${idx}_answer`),
   }));
   const [openFaq, setOpenFaq] = useState<boolean[]>(faqData.map(() => false));
 
@@ -40,7 +40,8 @@ export default function Interets() {
     const v = parseFloat(versement.replace(",", "."));
     const tNum = parseFloat(taux.replace(",", ".")) / 100;
     const nAn = parseFloat(annees.replace(",", "."));
-    const freq = freqOptions.find((f) => f.value === frequence) || freqOptions[0];
+    const freq =
+      freqOptions.find((f) => f.value === frequence) || freqOptions[0];
     const m = freq.m;
 
     if (
@@ -55,9 +56,7 @@ export default function Interets() {
       const n = m * nAn;
       const FV =
         P0 * Math.pow(1 + i, n) +
-        (v > 0 && i > 0
-          ? v * ((Math.pow(1 + i, n) - 1) / i)
-          : v * n);
+        (v > 0 && i > 0 ? v * ((Math.pow(1 + i, n) - 1) / i) : v * n);
       const totalVerse = P0 + v * n;
       const interets = FV - totalVerse;
       setResult({ fv: FV, interets, totalVerse });
@@ -67,11 +66,19 @@ export default function Interets() {
   };
 
   return (
-    <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title") + ' - ' + t("intro")}> 
+    <main
+      className="max-w-2xl mx-auto py-12 px-4 sm:px-8"
+      role="main"
+      aria-label={t("title") + " - " + t("intro")}
+    >
       <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
       <p className="mb-8">{t("intro")}</p>
 
-      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite">
+      <div
+        className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800"
+        role="note"
+        aria-live="polite"
+      >
         <strong>Disclaimer :</strong> {t("disclaimer")}
       </div>
 
@@ -83,7 +90,9 @@ export default function Interets() {
         role="form"
         autoComplete="off"
       >
-        <h2 id="interets-form-title" className="sr-only">{t("title")}</h2>
+        <h2 id="interets-form-title" className="sr-only">
+          {t("title")}
+        </h2>
         <label htmlFor="capital-input" className="font-semibold">
           {t("capitalLabel")}
         </label>
@@ -95,7 +104,7 @@ export default function Interets() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={capital}
-          onChange={e => setCapital(e.target.value)}
+          onChange={(e) => setCapital(e.target.value)}
           required
           aria-required="true"
           aria-label={t("capitalLabel")}
@@ -111,7 +120,7 @@ export default function Interets() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={versement}
-          onChange={e => setVersement(e.target.value)}
+          onChange={(e) => setVersement(e.target.value)}
           required
           aria-required="true"
           aria-label={t("versementLabel")}
@@ -127,7 +136,7 @@ export default function Interets() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={taux}
-          onChange={e => setTaux(e.target.value)}
+          onChange={(e) => setTaux(e.target.value)}
           required
           aria-required="true"
           aria-label={t("tauxLabel")}
@@ -143,7 +152,7 @@ export default function Interets() {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={annees}
-          onChange={e => setAnnees(e.target.value)}
+          onChange={(e) => setAnnees(e.target.value)}
           required
           aria-required="true"
           aria-label={t("anneesLabel")}
@@ -156,7 +165,7 @@ export default function Interets() {
           name="frequence"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={frequence}
-          onChange={e => setFrequence(e.target.value)}
+          onChange={(e) => setFrequence(e.target.value)}
           aria-label={t("frequenceLabel")}
         >
           {freqOptions.map((f) => (
@@ -165,8 +174,18 @@ export default function Interets() {
             </option>
           ))}
         </select>
-        <div className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2" id="interets-indicative">
-          {t("indicative")} <a href="#faq" className="underline" aria-label={t("learnMore") + ' FAQ'}>{t("learnMore")}</a>
+        <div
+          className="text-xs text-yellow-700 dark:text-yellow-400 flex items-center gap-2"
+          id="interets-indicative"
+        >
+          {t("indicative")}{" "}
+          <a
+            href="#faq"
+            className="underline"
+            aria-label={t("learnMore") + " FAQ"}
+          >
+            {t("learnMore")}
+          </a>
         </div>
         <button
           type="submit"
@@ -178,21 +197,21 @@ export default function Interets() {
         <div className="mt-2" aria-live="polite" aria-atomic="true">
           <span className="font-semibold">{t("resultLabel")}</span>
           <br />
-          {t("fvLabel")} {" "}
+          {t("fvLabel")}{" "}
           <span className="text-lg font-bold">
             {result !== null
               ? `${result.fv.toLocaleString(undefined, { maximumFractionDigits: 2 })} €`
               : "-- €"}
           </span>
           <br />
-          {t("interetsLabel")} {" "}
+          {t("interetsLabel")}{" "}
           <span className="text-lg font-bold">
             {result !== null
               ? `${result.interets.toLocaleString(undefined, { maximumFractionDigits: 2 })} €`
               : "-- €"}
           </span>
           <br />
-          {t("totalVerseLabel")} {" "}
+          {t("totalVerseLabel")}{" "}
           <span className="text-lg font-bold">
             {result !== null
               ? `${result.totalVerse.toLocaleString(undefined, { maximumFractionDigits: 2 })} €`
@@ -211,7 +230,9 @@ export default function Interets() {
         <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 font-mono text-sm whitespace-pre-line">
           {t("formula")}
         </div>
-        <p><strong>{t("example")}</strong></p>
+        <p>
+          <strong>{t("example")}</strong>
+        </p>
       </section>
 
       <section className="mb-6">
@@ -223,11 +244,23 @@ export default function Interets() {
         </ul>
       </section>
 
-      <section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
-        <h2 className="text-xl font-semibold mb-4" id="faq-title">{t("faqTitle")}</h2>
+      <section
+        className="mb-6"
+        id="faq"
+        aria-labelledby="faq-title"
+        role="region"
+      >
+        <h2 className="text-xl font-semibold mb-4" id="faq-title">
+          {t("faqTitle")}
+        </h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
-            <div key={idx} className="border rounded bg-gray-50 dark:bg-gray-900" role="group" aria-labelledby={`faq-question-${idx}`}>
+            <div
+              key={idx}
+              className="border rounded bg-gray-50 dark:bg-gray-900"
+              role="group"
+              aria-labelledby={`faq-question-${idx}`}
+            >
               <button
                 type="button"
                 className="w-full text-left px-4 py-3 font-semibold focus:outline-none flex justify-between items-center"
@@ -238,7 +271,9 @@ export default function Interets() {
                 aria-label={item.question}
               >
                 {item.question}
-                <span className="ml-2" aria-hidden="true">{openFaq[idx] ? "▲" : "▼"}</span>
+                <span className="ml-2" aria-hidden="true">
+                  {openFaq[idx] ? "▲" : "▼"}
+                </span>
               </button>
               {openFaq[idx] && (
                 <div

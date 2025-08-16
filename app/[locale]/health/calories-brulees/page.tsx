@@ -2,8 +2,12 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-function calculateCaloriesBurned(weight: number, duration: number, met: number) {
-  return (met * 3.5 * weight) / 200 * duration;
+function calculateCaloriesBurned(
+  weight: number,
+  duration: number,
+  met: number,
+) {
+  return ((met * 3.5 * weight) / 200) * duration;
 }
 
 export default function CaloriesBruleesPage() {
@@ -98,7 +102,8 @@ export default function CaloriesBruleesPage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kcal
+              {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })}{" "}
+              kcal
             </span>
           ) : (
             "--"

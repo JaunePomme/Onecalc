@@ -19,7 +19,12 @@ export default function OneRMPage() {
     try {
       const numWeight = parseFloat(weight.replace(",", "."));
       const numReps = parseInt(reps, 10);
-      if (isNaN(numWeight) || isNaN(numReps) || numWeight <= 0 || numReps <= 0) {
+      if (
+        isNaN(numWeight) ||
+        isNaN(numReps) ||
+        numWeight <= 0 ||
+        numReps <= 0
+      ) {
         throw new Error(t("errorInvalid"));
       }
       setResult(calculate1RM(numWeight, numReps));

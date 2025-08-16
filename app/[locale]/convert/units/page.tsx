@@ -85,12 +85,12 @@ function convertValue({
   }
   if (category === "temperature") {
     // Température : formules spécifiques
-    if (from === "C" && to === "F") return value * 9 / 5 + 32;
-    if (from === "F" && to === "C") return (value - 32) * 5 / 9;
+    if (from === "C" && to === "F") return (value * 9) / 5 + 32;
+    if (from === "F" && to === "C") return ((value - 32) * 5) / 9;
     if (from === "C" && to === "K") return value + 273.15;
     if (from === "K" && to === "C") return value - 273.15;
-    if (from === "F" && to === "K") return (value - 32) * 5 / 9 + 273.15;
-    if (from === "K" && to === "F") return (value - 273.15) * 9 / 5 + 32;
+    if (from === "F" && to === "K") return ((value - 32) * 5) / 9 + 273.15;
+    if (from === "K" && to === "F") return ((value - 273.15) * 9) / 5 + 32;
     return null;
   }
   return null;
@@ -99,7 +99,8 @@ function convertValue({
 export default function UnitsPage() {
   const t = useTranslations("Units");
   const localizedUnits = units(t);
-  const [category, setCategory] = useState<keyof typeof localizedUnits>("length");
+  const [category, setCategory] =
+    useState<keyof typeof localizedUnits>("length");
   const [from, setFrom] = useState(localizedUnits.length[0].code);
   const [to, setTo] = useState(localizedUnits.length[1].code);
   const [value, setValue] = useState("");
@@ -136,7 +137,7 @@ export default function UnitsPage() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -161,7 +162,9 @@ export default function UnitsPage() {
           <select
             className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
             value={category}
-            onChange={(e) => handleCategoryChange(e.target.value as keyof typeof units)}
+            onChange={(e) =>
+              handleCategoryChange(e.target.value as keyof typeof units)
+            }
           >
             <option value="longueur">{t("categoryLength")}</option>
             <option value="masse">{t("categoryMass")}</option>
@@ -178,7 +181,9 @@ export default function UnitsPage() {
               onChange={(e) => setFrom(e.target.value)}
             >
               {localizedUnits[category].map((u) => (
-                <option key={u.code} value={u.code}>{u.label}</option>
+                <option key={u.code} value={u.code}>
+                  {u.label}
+                </option>
               ))}
             </select>
           </label>
@@ -190,7 +195,9 @@ export default function UnitsPage() {
               onChange={(e) => setTo(e.target.value)}
             >
               {localizedUnits[category].map((u) => (
-                <option key={u.code} value={u.code}>{u.label}</option>
+                <option key={u.code} value={u.code}>
+                  {u.label}
+                </option>
               ))}
             </select>
           </label>

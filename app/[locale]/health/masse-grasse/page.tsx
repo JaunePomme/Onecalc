@@ -2,11 +2,15 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-function calculateBodyFat(weight: number, waist: number, gender: "male" | "female") {
+function calculateBodyFat(
+  weight: number,
+  waist: number,
+  gender: "male" | "female",
+) {
   if (gender === "male") {
-    return (1.082 * weight + 94.42 - waist * 4.15) / weight * 100;
+    return ((1.082 * weight + 94.42 - waist * 4.15) / weight) * 100;
   } else {
-    return (0.732 * weight + 8.987 + waist * 3.14) / weight * 100;
+    return ((0.732 * weight + 8.987 + waist * 3.14) / weight) * 100;
   }
 }
 
@@ -24,7 +28,12 @@ export default function MasseGrassePage() {
     try {
       const numWeight = parseFloat(weight.replace(",", "."));
       const numWaist = parseFloat(waist.replace(",", "."));
-      if (isNaN(numWeight) || isNaN(numWaist) || numWeight <= 0 || numWaist <= 0) {
+      if (
+        isNaN(numWeight) ||
+        isNaN(numWaist) ||
+        numWeight <= 0 ||
+        numWaist <= 0
+      ) {
         throw new Error(t("errorInvalid"));
       }
       setResult(calculateBodyFat(numWeight, numWaist, gender));

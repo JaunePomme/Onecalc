@@ -5,7 +5,11 @@ import { useTranslations } from "next-intl";
 function calculateNextBirthday(birthDate: string) {
   const now = new Date();
   const birth = new Date(birthDate);
-  const nextBirthday = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
+  const nextBirthday = new Date(
+    now.getFullYear(),
+    birth.getMonth(),
+    birth.getDate(),
+  );
   if (nextBirthday < now) {
     nextBirthday.setFullYear(nextBirthday.getFullYear() + 1);
   }
@@ -17,7 +21,9 @@ function calculateNextBirthday(birthDate: string) {
 export default function NextBirthdayPage() {
   const t = useTranslations("NextBirthday");
   const [birthDate, setBirthDate] = useState("");
-  const [result, setResult] = useState<{ date: string; days: number } | null>(null);
+  const [result, setResult] = useState<{ date: string; days: number } | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   const handleCalc = (e: React.FormEvent) => {

@@ -10,7 +10,6 @@ const locales = [
 export default function LocaleSwitcher() {
   const pathname = usePathname();
   const params = useParams();
-  const router = useRouter();
 
   // On suppose que le premier segment du path est la locale
   const currentLocale = params?.locale || "fr";
@@ -19,7 +18,7 @@ export default function LocaleSwitcher() {
   function getPathForLocale(locale: string) {
     if (!pathname) return "/" + locale;
     const segments = pathname.split("/").filter(Boolean);
-    if (locales.some(l => l.code === segments[0])) {
+    if (locales.some((l) => l.code === segments[0])) {
       segments[0] = locale;
     } else {
       segments.unshift(locale);
@@ -37,7 +36,9 @@ export default function LocaleSwitcher() {
           className={`text-2xl transition-opacity ${currentLocale === loc.code ? "opacity-100" : "opacity-60 hover:opacity-100"}`}
           prefetch={false}
         >
-          <span role="img" aria-label={loc.label}>{loc.flag}</span>
+          <span role="img" aria-label={loc.label}>
+            {loc.flag}
+          </span>
         </Link>
       ))}
     </div>

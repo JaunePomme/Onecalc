@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-
 export default function ConversionDevises() {
   const t = useTranslations("ConversionDevises");
   const faqData = [0, 1, 2].map((idx) => ({
@@ -10,27 +9,28 @@ export default function ConversionDevises() {
     answer: t(`faq_${idx}_answer`),
   }));
 
-const devises = [
-  { code: "EUR", label: "Euro" },
-  { code: "USD", label: "Dollar US" },
-  { code: "GBP", label: "Livre Sterling" },
-  { code: "CHF", label: "Franc Suisse" },
-  { code: "JPY", label: "Yen Japonais" },
-  { code: "CAD", label: "Dollar Canadien" },
-  { code: "AUD", label: "Dollar Australien" },
-  { code: "CNY", label: "Yuan Chinois" },
-];
+  const devises = [
+    { code: "EUR", label: "Euro" },
+    { code: "USD", label: "Dollar US" },
+    { code: "GBP", label: "Livre Sterling" },
+    { code: "CHF", label: "Franc Suisse" },
+    { code: "JPY", label: "Yen Japonais" },
+    { code: "CAD", label: "Dollar Canadien" },
+    { code: "AUD", label: "Dollar Australien" },
+    { code: "CNY", label: "Yuan Chinois" },
+  ];
 
-async function fetchRate(from: string, to: string): Promise<number | null> {
-  try {
-    const res = await fetch(`https://api.exchangerate.host/latest?base=${from}&symbols=${to}`);
-    const data = await res.json();
-    return data.rates?.[to] ?? null;
-  } catch {
-    return null;
+  async function fetchRate(from: string, to: string): Promise<number | null> {
+    try {
+      const res = await fetch(
+        `https://api.exchangerate.host/latest?base=${from}&symbols=${to}`,
+      );
+      const data = await res.json();
+      return data.rates?.[to] ?? null;
+    } catch {
+      return null;
+    }
   }
-}
-
 
   const [from, setFrom] = useState("EUR");
   const [to, setTo] = useState("USD");
@@ -53,7 +53,9 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
     setRate(r);
     setLoading(false);
     if (r !== null) {
-      setResult((amt * r).toLocaleString("fr-FR", { maximumFractionDigits: 4 }));
+      setResult(
+        (amt * r).toLocaleString("fr-FR", { maximumFractionDigits: 4 }),
+      );
     } else {
       setResult(null);
     }
@@ -61,17 +63,24 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
-
   return (
-    <main className="max-w-2xl mx-auto py-12 px-4 sm:px-8" role="main" aria-label={t("title")}> 
+    <main
+      className="max-w-2xl mx-auto py-12 px-4 sm:px-8"
+      role="main"
+      aria-label={t("title")}
+    >
       <h1 className="text-3xl font-bold mb-4">{t("title")}</h1>
       <p className="mb-8">{t("intro")}</p>
 
-      <div className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800" role="note" aria-live="polite">
+      <div
+        className="mb-6 p-3 rounded bg-yellow-50 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-sm border border-yellow-200 dark:border-yellow-800"
+        role="note"
+        aria-live="polite"
+      >
         <strong>Disclaimer :</strong> {t("disclaimer")}
       </div>
 
@@ -83,7 +92,9 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
         role="form"
         autoComplete="off"
       >
-        <h2 id="conv-form-title" className="sr-only">{t("title")}</h2>
+        <h2 id="conv-form-title" className="sr-only">
+          {t("title")}
+        </h2>
         <label htmlFor="amount-input" className="font-semibold">
           {t("amountLabel")}
         </label>
@@ -95,7 +106,7 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
           step="any"
           className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
           value={amount}
-          onChange={e => setAmount(e.target.value)}
+          onChange={(e) => setAmount(e.target.value)}
           required
           aria-required="true"
           aria-label={t("amountLabel")}
@@ -107,11 +118,13 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
               id="from-select"
               className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
               value={from}
-              onChange={e => setFrom(e.target.value)}
+              onChange={(e) => setFrom(e.target.value)}
               aria-label={t("fromLabel")}
             >
-              {devises.map(dev => (
-                <option key={dev.code} value={dev.code}>{dev.code} - {dev.label}</option>
+              {devises.map((dev) => (
+                <option key={dev.code} value={dev.code}>
+                  {dev.code} - {dev.label}
+                </option>
               ))}
             </select>
           </label>
@@ -121,11 +134,13 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
               id="to-select"
               className="block w-full mt-1 p-2 border rounded text-gray-900 bg-white dark:text-gray-100 dark:bg-gray-800"
               value={to}
-              onChange={e => setTo(e.target.value)}
+              onChange={(e) => setTo(e.target.value)}
               aria-label={t("toLabel")}
             >
-              {devises.map(dev => (
-                <option key={dev.code} value={dev.code}>{dev.code} - {dev.label}</option>
+              {devises.map((dev) => (
+                <option key={dev.code} value={dev.code}>
+                  {dev.code} - {dev.label}
+                </option>
               ))}
             </select>
           </label>
@@ -143,10 +158,14 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
           <br />
           {result !== null && rate !== null ? (
             <>
-              <span className="text-lg font-bold">{result} {to}</span>
+              <span className="text-lg font-bold">
+                {result} {to}
+              </span>
               <br />
               <span className="text-xs text-gray-500">
-                1 {from} = {rate.toLocaleString(undefined, { maximumFractionDigits: 6 })} {to}
+                1 {from} ={" "}
+                {rate.toLocaleString(undefined, { maximumFractionDigits: 6 })}{" "}
+                {to}
               </span>
             </>
           ) : (
@@ -155,8 +174,15 @@ async function fetchRate(from: string, to: string): Promise<number | null> {
         </div>
       </form>
 
-      <section className="mb-6" id="faq" aria-labelledby="faq-title" role="region">
-        <h2 className="text-xl font-semibold mb-4" id="faq-title">{t("faqTitle")}</h2>
+      <section
+        className="mb-6"
+        id="faq"
+        aria-labelledby="faq-title"
+        role="region"
+      >
+        <h2 className="text-xl font-semibold mb-4" id="faq-title">
+          {t("faqTitle")}
+        </h2>
         <div className="flex flex-col gap-2">
           {faqData.map((item, idx) => (
             <div

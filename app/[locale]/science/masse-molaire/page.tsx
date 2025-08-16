@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-function calculateMolarMass(elements: { symbol: string; mass: number; count: number }[]) {
+function calculateMolarMass(
+  elements: { symbol: string; mass: number; count: number }[],
+) {
   return elements.reduce((total, el) => total + el.mass * el.count, 0);
 }
 
@@ -65,7 +67,8 @@ export default function MasseMolairePage() {
             <span className="text-red-600">{error}</span>
           ) : result !== null ? (
             <span className="text-lg font-bold">
-              {result.toLocaleString("fr-FR", { maximumFractionDigits: 4 })} g/mol
+              {result.toLocaleString("fr-FR", { maximumFractionDigits: 4 })}{" "}
+              g/mol
             </span>
           ) : (
             "--"
@@ -87,7 +90,7 @@ function getElementMass(symbol: string): number | null {
     N: 14.007,
     O: 15.999,
     F: 18.998,
-    Ne: 20.180,
+    Ne: 20.18,
     // Add more elements as needed
   };
   return periodicTable[symbol] || null;

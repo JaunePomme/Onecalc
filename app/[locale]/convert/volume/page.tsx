@@ -48,7 +48,7 @@ export default function VolumePage() {
 
   const toggleFaq = (idx: number) => {
     setOpenFaq((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx],
     );
   };
 
@@ -171,11 +171,16 @@ export default function VolumePage() {
           ) : result !== null ? (
             <>
               <span className="text-lg font-bold">
-                {result.toLocaleString("fr-FR", { maximumFractionDigits: 4 })} m³
+                {result.toLocaleString("fr-FR", { maximumFractionDigits: 4 })}{" "}
+                m³
               </span>
               <br />
               <span className="text-xs text-gray-500">
-                {t("liters", { value: (result * 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 }) })}
+                {t("liters", {
+                  value: (result * 1000).toLocaleString("fr-FR", {
+                    maximumFractionDigits: 2,
+                  }),
+                })}
               </span>
             </>
           ) : (

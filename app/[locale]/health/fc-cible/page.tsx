@@ -2,7 +2,11 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 
-function calculateTargetHeartRate(age: number, restingHR: number, intensity: number) {
+function calculateTargetHeartRate(
+  age: number,
+  restingHR: number,
+  intensity: number,
+) {
   const maxHR = 220 - age;
   return restingHR + (maxHR - restingHR) * intensity;
 }
